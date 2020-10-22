@@ -4,8 +4,7 @@ module.exports = {
   chainWebpack: config => {
     const types = ['vue-modules', 'vue', 'normal-modules', 'normal'];
     types.forEach(type => addStyleResource(config.module.rule('scss').oneOf(type)))
-  },
-  publicPath: '/bbh/'
+  }
 };
 
 function addStyleResource (rule) {
@@ -13,7 +12,7 @@ function addStyleResource (rule) {
     .loader('style-resources-loader')
     .options({
       patterns: [
-        path.resolve(__dirname, './src/assets/styles/style.scss'),
+        path.resolve(__dirname, './src/assets/style/style.scss'),
       ],
     })
 }

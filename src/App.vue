@@ -1,32 +1,80 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="root">
+      <Header/>
+      <main class="main">
+        <router-view/>
+      </main>
     </div>
-    <router-view/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import Header from "./components/layout/Header";
 
-#nav {
-  padding: 30px;
+  export default {
+    name: 'App',
+    components: {
+      Header
+    },
+  }
+</script>
+
+<style lang="scss">
+  @import "assets/style/icomoon.scss";
+  @import "assets/style/container";
+  @import "assets/style/buttons";
+
+  @font-face {
+    font-family: 'Roboto';
+    src: url('assets/fonts/roboto/Roboto-Bold.ttf');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Roboto';
+    src: url('assets/fonts/roboto/Roboto-Medium.ttf');
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Roboto';
+    src: url('assets/fonts/roboto/Roboto-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Roboto';
+    src: url('assets/fonts/roboto/Roboto-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: $main;
+  }
 
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    text-decoration: none;
+  }
 
-    &.router-link-exact-active {
-      color: #42b983;
+  button {
+    font: inherit;
+  }
+
+  a, button {
+    &:hover {
+      cursor: pointer;
     }
   }
-}
+
+  * {
+    box-sizing: border-box;
+    &:focus {
+      outline: none;
+    }
+  }
 </style>
