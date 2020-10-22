@@ -62,5 +62,11 @@ export default {
 </script>
 
 <style lang="scss">
-
+.articles {
+  display: flex;
+  justify-content: space-between;
+}
+.article {
+  display: flex;
+}
 </style>

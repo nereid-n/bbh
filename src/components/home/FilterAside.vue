@@ -281,5 +281,14 @@ export default {
         border-bottom: none;
       }
     }
+    &__line {
+      display: flex;
+      align-items: center;
+    }
+    &__num {
+      margin-left: auto;
+      color: $placeholder;
+      font-size: 14px;
+    }
   }
 </style>

@@ -6,11 +6,8 @@
           class="top-list__column"
       >
         <h2 class="h2">{{list.title}}</h2>
-        <ul
-            v-for="li in list.list"
-            class="top-list"
-        >
-          <li>
+        <ul class="top-list">
+          <li v-for="li in list.list">
             <router-link :to="li.link">
               {{li.title}}
             </router-link>
@@ -217,5 +214,22 @@ export default {
 </script>
 
 <style lang="scss">
-
+.top-list {
+  padding: 0;
+  list-style: none;
+  li {
+    padding-bottom: 10px;
+  }
+  &__content {
+    display: flex;
+  }
+  &__column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    .link {
+      margin-top: auto;
+    }
+  }
+}
 </style>
