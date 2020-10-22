@@ -8,4 +8,8 @@
     color: #fff;
     background-color: $primary;
   }
+  @media (max-width: 1540px) {
+    padding: 15px 15px;
+    font-size: 13px;
+  }
 }

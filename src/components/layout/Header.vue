@@ -127,6 +127,7 @@
   .header {
     padding: 14px 0;
     color: #000;
+    background-color: #fff;
     &__logo {
       margin-right: 40px;
       @media (max-width: 1540px) {
@@ -158,6 +159,9 @@
       display: flex;
       align-items: center;
       width: 47%;
+      @media (max-width: 1540px) {
+        width: 43%;
+      }
     }
     &__nav {
       display: flex;
@@ -191,7 +195,7 @@
           color: $primary;
         }
         @media (max-width: 1540px) {
-          margin-left: 15px;
+          margin-left: 10px;
         }
       }
     }

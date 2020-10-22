@@ -55,6 +55,7 @@
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: $main;
+    background-color: #f5f7f9;
   }
 
   a {
