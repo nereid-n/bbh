@@ -45,3 +45,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.home-main-content {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

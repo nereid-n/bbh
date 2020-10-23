@@ -158,7 +158,7 @@
     &__left {
       display: flex;
       align-items: center;
-      width: 47%;
+      width: 46%;
       @media (max-width: 1540px) {
         width: 43%;
       }

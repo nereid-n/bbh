@@ -179,6 +179,7 @@ export default {
       }
     }
     &__btn {
+      padding: 0 4px;
       color: #fff;
       text-transform: uppercase;
       background-color: transparent;

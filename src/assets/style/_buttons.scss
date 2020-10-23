@@ -12,4 +12,13 @@
     padding: 15px 15px;
     font-size: 13px;
   }
+  &-outline {
+    &-gray {
+      color: #72797e;
+      font-size: 16px;
+      background-color: transparent;
+      border-radius: 2px;
+      border: solid 1px #72797e;
+    }
+  }
 }

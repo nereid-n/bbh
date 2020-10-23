@@ -49,6 +49,12 @@
     font-weight: 300;
     font-style: normal;
   }
+  @font-face {
+    font-family: 'Roboto';
+    src: url('assets/fonts/roboto/Roboto-Thin.ttf');
+    font-weight: 100;
+    font-style: normal;
+  }
 
   body {
     margin: 0;
@@ -80,6 +86,8 @@
   }
 
   .h2 {
+    margin-top: 0;
+    margin-bottom: 11px;
     color: #000;
     font-size: 18px;
     font-weight: 500;

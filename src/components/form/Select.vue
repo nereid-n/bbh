@@ -4,9 +4,7 @@
       <div v-if="data.defaultValue === undefined" class="input__placeholder">
         {{data.placeholder}}
       </div>
-      <div v-else class="select__text">
-        {{selectText}}
-      </div>
+      <div v-else class="select__text" v-html="selectText"></div>
       <div class="select__arrow"></div>
     </div>
     <div class="select__dropdown">
@@ -63,6 +61,26 @@ export default {
       .select__arrow {
         &:before {
           color: $primaryText;
+        }
+      }
+    }
+  }
+  .select-link {
+    .input {
+      height: 30px;
+      padding: 5px 30px 5px 0;
+      background-color: transparent;
+    }
+    .select__text {
+      color: $links;
+      font-size: 18px;
+      font-weight: 100;
+      border-bottom: 1px dotted $links;
+    }
+    &.select-fill {
+      .select__arrow {
+        &:before {
+          color: $links;
         }
       }
     }

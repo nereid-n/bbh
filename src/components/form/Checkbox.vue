@@ -1,13 +1,19 @@
 <template>
   <div class="checkbox-wrap">
     <input :id="data.id" type="checkbox">
-    <label :for="data.id">{{data.text}}</label>
+    <label :for="data.id">
+      <Icon v-if="data.icon !== undefined" :icon="data.icon"/>
+      <span>{{data.text}}</span>
+      <i v-if="data.question !== undefined" class="question__icon icon-question-circle-alt"></i>
+    </label>
   </div>
 </template>
 
 <script>
+import Icon from "@/components/Icon";
 export default {
   name: "Checkbox",
+  components: {Icon},
   props: {
     data: {
       type: Object,
@@ -20,6 +26,7 @@ export default {
 <style lang="scss">
   .checkbox-wrap {
     position: relative;
+    display: flex;
     cursor: pointer;
     input {
       position: absolute;
@@ -35,6 +42,8 @@ export default {
       }
     }
     label {
+      display: flex;
+      align-items: flex-start;
       cursor: pointer;
       padding-left: 30px;
       color: $grayText;
@@ -60,5 +69,17 @@ export default {
         opacity: 0;
       }
     }
+    .designations__icon {
+      margin-left: -7px;
+      margin-right: 16px;
+      margin-top: -5px;
+    }
+  }
+  .question__icon {
+    margin-left: 12px;
+    margin-top: 2px;
+    margin-bottom: -2px;
+    font-size: 18px;
+    color: #a9a9a9;
   }
 </style>

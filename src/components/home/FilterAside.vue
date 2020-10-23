@@ -5,10 +5,10 @@
       <Select :data="rubric"/>
     </div>
     <div class="filter-aside__block">
-      <h2 class="h2">Вид занятости:</h2>
-      <div class="filter-aside__reset-small">
+      <div class="filter-aside__reset">
         Сбросить
       </div>
+      <h2 class="h2">Вид занятости:</h2>
       <Checkbox
           v-for="item in type"
           :data="item"
@@ -16,25 +16,42 @@
     </div>
     <div class="filter-aside__block">
       <h2 class="h2">Хочу зарплату:</h2>
-      <Checkbox :data="salary"/>
+      <div class="viewForm viewForm-big">
+        <div class="viewForm__text">
+          oт
+        </div>
+        <Input
+            :data="salary"
+            class="viewForm__input"
+        />
+        <div class="viewForm__text">
+          ₽
+        </div>
+        <button class="viewForm__button btn-outline-gray">ok</button>
+      </div>
+      <div class="viewForm__text-bottom">
+        <span>270 €</span>
+        <span>390 $</span>
+      </div>
+      <Checkbox class="filter-aside__checkbox-salary" :data="salaryCheckbox"/>
     </div>
-    <div class="filter-aside__block">
+    <div class="filter-aside__block filter-aside__level">
       <h2 class="h2">Уровень должности:</h2>
       <Checkbox
           v-for="item in level"
           :data="item"
       />
     </div>
-    <div class="filter-aside__block">
+    <div class="filter-aside__block filter-aside__agency">
       <Checkbox :data="agency"/>
     </div>
-    <div class="filter-aside__block">
+    <div class="filter-aside__block filter-aside__options">
       <Checkbox
           v-for="item in moreOptions"
           :data="item"
       />
     </div>
-    <div class="filter-aside__block">
+    <div class="filter-aside__block filter-aside__photo">
       <h2 class="h2">Наличие фото:</h2>
       <div
           v-for="item in photo"
@@ -46,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="filter-aside__block">
+    <div class="filter-aside__block filter-aside__preferences">
       <h2 class="h2">Предпочтения:</h2>
       <div
           v-for="item in preferences"
@@ -67,9 +84,10 @@
 <script>
 import Select from "@/components/form/Select";
 import Checkbox from "@/components/form/Checkbox";
+import Input from "@/components/form/Input";
 export default {
   name: "FilterAside",
-  components: {Checkbox, Select},
+  components: {Input, Checkbox, Select},
   data() {
     return {
       rubric: {
@@ -116,6 +134,9 @@ export default {
         }
       ],
       salary: {
+        placeholder: ''
+      },
+      salaryCheckbox: {
         text: 'Показывать вакансии без з.п.',
         id: 'withoutSalary'
       },
@@ -153,12 +174,12 @@ export default {
         {
           text: 'Готов(а) на любую профессию',
           id: 'moreOption1',
-          question: 'texttexttext'
+          question: 'Данный работодатель согласен принять на работу соискателя без опыта работы или из других профессий с условием дополнительного обучения на новую для него профессию или должность'
         },
         {
           text: 'Опыт работы: не имеет значения',
           id: 'moreOption2',
-          question: 'texttexttext'
+          question: 'Опыт работы: не имеет значения'
         },
         {
           text: 'Отображать кто online',
@@ -275,7 +296,14 @@ export default {
 <style lang="scss">
   .filter-aside {
     width: 350px;
+    margin-top: 36px;
+    .h2 {
+      margin-bottom: 13px;
+    }
     &__block {
+      position: relative;
+      margin-bottom: 27px;
+      padding-bottom: 32px;
       border-bottom: 1px solid #fff;
       &:last-child {
         border-bottom: none;
@@ -283,12 +311,79 @@ export default {
     }
     &__line {
       display: flex;
-      align-items: center;
     }
     &__num {
       margin-left: auto;
       color: $placeholder;
       font-size: 14px;
+    }
+    &__reset {
+      position: absolute;
+      top: 12px;
+      right: 1px;
+      font-size: 14px;
+      color: $placeholder;
+    }
+    .h2 + .checkbox-wrap {
+      margin-top: 18px;
+    }
+    .checkbox-wrap {
+      margin-bottom: 18px;
+      label {
+        padding-left: 36px;
+        font-size: 16px;
+      }
+      &:last-child {
+        margin-bottom: -12px;
+      }
+    }
+    &__checkbox {
+      &-salary {
+        max-width: 170px;
+        margin-top: 12px;
+        margin-bottom: -4px !important;
+      }
+    }
+    &__level {
+      padding-bottom: 39px;
+      .checkbox-wrap {
+        max-width: 235px;
+      }
+    }
+    &__agency {
+      padding-top: 3px;
+      padding-bottom: 39px;
+    }
+    &__options {
+      padding-bottom: 51px;
+      .checkbox-wrap {
+        margin-bottom: 21px;
+        max-width: 330px;
+        &:nth-child(1),
+        &:nth-child(2) {
+          margin-bottom: 31px;
+        }
+      }
+    }
+    &__photo {
+      padding-bottom: 3px;
+      margin-bottom: 20px;
+      .h2 {
+        margin-bottom: 17px;
+      }
+    }
+    &__preferences {
+      .h2 {
+        margin-bottom: 27px;
+      }
+      .checkbox-wrap {
+        margin-bottom: 21px;
+      }
+      .btn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px 15px;
+      }
     }
   }
 </style>
