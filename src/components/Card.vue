@@ -1,11 +1,29 @@
 <template>
-  <div class="card">
+  <div :class="cardClass">
+    <div v-if="data.urgently" class="footnote footnote__urgently">
+      <i class="icon-fire"></i>
+      <span class="footnote__text">Срочно</span>
+      <i class="icon-fire"></i>
+    </div>
+    <div v-else-if="data.prestige" class="footnote footnote__prestige">
+      <i class="icon-star"></i>
+      <span class="footnote__text">Престиж</span>
+      <i class="icon-star"></i>
+    </div>
     <div class="card__row">
       <div class="card__left">
         <div class="card__type">
           {{type[data.type]}}
         </div>
-        <img :src="img" alt="" class="card__img">
+        <div :class="`card__img ${data.type === 'vacancy' ? '' : 'card__avatar'}`">
+          <img :src="img" alt="">
+          <Icon v-if="data.urgently" :icon="'icon-star-alt'"/>
+        </div>
+        <i v-if="data.best" class="icon-best"></i>
+        <div class="card__left-icon">
+          <Icon v-if="data.openToOffers" :icon="'icon-tie'"/>
+          <Icon v-if="data.activeSearch" :icon="'icon-dollar'"/>
+        </div>
       </div>
       <div class="card__right">
         <div class="card__top" v-if="data.withoutExperience || data.anyProfession">
@@ -13,15 +31,34 @@
             {{topText}}
           </div>
           <i class="icon-question-circle-alt"></i>
-          <i class="icon-video"></i>
+          <i v-if="data.moderated" class="icon-video"></i>
         </div>
         <div class="card__main">
-          <div class="card__title">{{data.title}}</div>
-          <div class="card__name">{{data.name}}</div>
+          <div class="card__header">
+            <div class="card__header-left">
+              <div class="card__title">{{data.title}}</div>
+              <div class="card__name">{{data.name}}</div>
+            </div>
+            <div class="card__header-right">
+              <div class="card__icons-wrap">
+                <div v-if="data.best" class="achievement achievement-best-employer">
+                  <div class="achievement__icon"><i class="icon-circle-r"></i><span>!</span></div>
+                  <span class="achievement__text">Лучший работодатель</span>
+                </div>
+                <div v-else-if="data.recommended" class="achievement achievement-recommend">
+                  <div class="achievement__icon"><i class="icon"></i></div>
+                  <span class="achievement__text">Мы рекомендуем!</span>
+                </div>
+                <CardIcons
+                    :favorite="data.favorite"
+                />
+              </div>
+            </div>
+          </div>
           <div class="card__place-salary">
             <div class="card__place">
               <i class="icon-map-marker-alt"></i>
-              <span>{{data.city}}</span>, <span>{{data.area}}</span>
+              <div><span>{{data.city}}</span>, <span>{{data.area}}</span></div>
             </div>
             <div class="card__salary">
               <i class="icon-ruble-circle"></i>
@@ -30,19 +67,23 @@
           </div>
           <div class="card__phones">
             <i class="icon-phone-alt"></i>
-            <a
-                v-for="phone in data.phones"
-                :href="phoneHref(phone)"
-            >
-              {{phone}}
-            </a>
-            <span v-if="data.contactPerson !== ''">
+            <div>
+              <template v-for="(phone, index) in data.phones">
+                <a
+                    :href="phoneHref(phone)"
+                >
+                  {{phone}}
+                </a><template v-if="data.contactPerson !== '' || index !== data.phones.length - 1">,</template>
+              </template>
+              <span v-if="data.contactPerson !== ''">
               Контактное лицо: {{data.contactPerson}}
             </span>
+            </div>
           </div>
           <div class="card__tags" v-if="data.tags.length > 0">
             <div
-                v-for="tag in data.tags"
+                v-for="(tag, index) in data.tags"
+                v-if="index < 7"
                 class="card__tag"
             >
               {{tag}}
@@ -51,46 +92,138 @@
                 v-if="data.tags.length > 6"
                 class="card__tags-more"
             >
-              Ещё 6
+              Ещё {{data.tags.length - 6}}
             </div>
           </div>
         </div>
         <div class="card__bottom">
           <div class="card__vacancies-btn">
-            <span>{{vacancies}}</span>
-            <i class="icon-angle-down"></i>
+            <template v-if="data.vacancies !== undefined">
+              <span>{{vacancies}}</span>
+              <i class="icon-angle-down"></i>
+            </template>
           </div>
-          <div class="card__preferences">
-
+          <div v-if="data.preferences !== undefined" class="card__preferences">
+            <Icon
+                v-for="(icon, key, index) in preferences"
+                :class="preferenceActive(key)"
+                :icon="icon"
+            />
           </div>
           <div class="card__date">
-
+            {{data.date}}
           </div>
         </div>
       </div>
     </div>
-    <div class="card__detail">
+    <div class="card__detail" v-if="data.details !== undefined">
       <div class="card__row">
-        <div class="card__left"></div>
-        <div class="card__right"></div>
+        <div class="card__left">Обязанности:</div>
+        <div class="card__right">
+          <div class="card__list">
+            <div class="card__list-item" v-for="(item, index) in data.details.duties">
+              {{item}}<template v-if="index !== data.details.duties.length - 1">;</template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row">
+        <div class="card__left">Требования:</div>
+        <div class="card__right">
+          <div class="card__list">
+            <div class="card__list-item" v-for="(item, index) in data.details.demands">
+              {{item.title}}
+              <template v-if="item.values !== undefined">
+                <span> - </span>
+                <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+              </template><template v-if="index !== data.details.demands.length - 1">;</template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row">
+        <div class="card__left">Условия:</div>
+        <div class="card__right">
+          <div class="card__list">
+            <div class="card__list-item" v-for="(item, index) in data.details.terms">
+              {{item.title}}
+              <template v-if="item.values !== undefined">
+                <span> - </span>
+                <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+              </template><template v-if="index !== data.details.terms.length - 1">;</template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row">
+        <div class="card__left">Зарплата:</div>
+        <div class="card__right">
+          <div class="card__list">
+            <div class="card__list-item" v-for="item in data.details.salaryDetail">
+              {{item.title}}
+              <template v-if="item.values !== undefined">
+                <span> - </span>
+                <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row">
+        <div class="card__left">Дополнительно:</div>
+        <div class="card__right">
+          <div class="card__list">
+            <div class="card__list-item">
+              {{data.details.additionally}}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card__row">
+    <div class="card__row" v-if="data.vacancies !== undefined">
       <div class="card__left"></div>
       <div class="card__right">
         <div class="card__vacancies">
-          <div class="card__vacancy">
-
+          <div
+              v-for="vacancy in data.vacancies"
+              class="card__vacancy"
+          >
+            <div class="card__vacancy-line"></div>
+            <div class="card__vacancy-content">
+              <router-link :to="vacancy.link" class="card__vacancy-title">
+                {{vacancy.title}}
+              </router-link>
+              <i class="icon-ruble-circle"></i>
+              <div class="card__vacancy-salary">{{vacancy.salary}}</div>
+              <CardIcons :favorite="vacancy.favorite"/>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="data.moderated" class="card__status">
+      <span class="card__status-online" v-if="data.status === 'online'">
+        online
+      </span>
+      <span v-else>
+        Был в сети<br>{{data.status}} назад
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import Icon from "@/components/Icon";
+import CardIcons from "@/components/CardIcons";
 export default {
   name: "Card",
+  components: {CardIcons, Icon},
   props: {
     data: {
       type: Object,
@@ -102,6 +235,15 @@ export default {
       type: {
         vacancy: 'Вакансии',
         cv: 'Резюме'
+      },
+      preferences: {
+        teenagers: 'icon-year',
+        students: 'icon-cap',
+        pensioners: 'icon-retiree',
+        disabled: 'icon-handicapped',
+        foreigners: 'icon-globe',
+        detail: 'icon-ruble-circle',
+        weekend: 'icon-dollar-circle'
       }
     }
   },
@@ -113,14 +255,16 @@ export default {
       return '/img/no-image.png';
     },
     topText() {
-      if (this.data.withoutExperience) {
+      if (!this.data.moderated) {
+        return 'объявление не прошло модерацию';
+      } else if (this.data.withoutExperience) {
         return 'Опыт работы не имеет значения';
       } else if (this.data.anyProfession) {
         return 'Готов(а) на любую профессию';
       }
     },
     vacancies() {
-      let count = this.data.vacancies;
+      let count = this.data.vacancies.length;
       let lastNum = count.toString().split('').pop();
       if (lastNum === 1) {
         return `${count} вакансия`;
@@ -128,11 +272,30 @@ export default {
         return `${count} вакансии`;
       }
       return `${count} вакансий`;
+    },
+    cardClass() {
+      let className = 'card';
+      if (this.data.recommended) {
+        className += ' card__recommended';
+      } else if (this.data.best) {
+        className += ' card__best';
+      } else if (!this.data.moderated) {
+        className += ' card__not-moderated';
+      } else if (this.data.prestige || this.data.urgently) {
+        className += ' card__footnote';
+      }
+      return className;
     }
   },
   methods: {
     phoneHref(phone) {
       return 'tel:' + phone.replace(/[^+0-9]/g, '');
+    },
+    preferenceActive(preference) {
+      for (let value of this.data.preferences) {
+        if (value === preference) return '';
+      }
+      return 'disable';
     }
   }
 }
@@ -140,6 +303,435 @@ export default {
 
 <style lang="scss">
   .card {
+    position: relative;
+    padding-top: 14px;
+    min-height: 170px;
+    padding-bottom: 10px;
     background-color: #fff;
+    overflow: hidden;
+    border-bottom: 1px solid #f5f7f9;
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '';
+      height: 100%;
+      width: 4px;
+      border-radius: 2px;
+    }
+    &__row {
+      display: flex;
+    }
+    &__left {
+      min-width: 150px;
+      text-align: center;
+      &-icon {
+        display: flex;
+        justify-content: center;
+        .designations__icon {
+          margin: 0;
+        }
+      }
+    }
+    &__right {
+      width: calc(100% - 150px);
+      padding-right: 24px;
+    }
+    &__type {
+      margin-top: 2px;
+      color: $primary;
+    }
+    &__type,
+    &__top-text {
+      letter-spacing: 1.53px;
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+    &__top {
+      display: flex;
+      align-items: center;
+      &-text {
+        color: #72797e;
+      }
+      i {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+    }
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    &__place-salary {
+      display: flex;
+      align-items: center;
+      font-weight: 300;
+      i {
+        margin-right: 11px;
+        font-size: 20px;
+      }
+    }
+    &__place {
+      display: flex;
+      align-items: center;
+      color: #3568b4;
+      span {
+        border-bottom: 1px dotted #3568b4;
+      }
+    }
+    &__salary {
+      display: flex;
+      align-items: center;
+      margin-left: 106px;
+      color: #b5b5b5;
+    }
+    &__phones {
+      display: flex;
+      align-items: center;
+      max-width: 100%;
+      margin-top: 12px;
+      margin-bottom: 11px;
+      color: #b5b5b5;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      i {
+        margin-right: 5px;
+        font-size: 20px;
+      }
+      a {
+        color: inherit;
+      }
+    }
+    &__title {
+      margin-bottom: 3px;
+      color: $links;
+      font-size: 20px;
+    }
+    &__name {
+      color: #504f4f;
+      font-weight: 300;
+    }
+    &__tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      &-more {
+        margin-left: 4px;
+        margin-bottom: 9px;
+        font-size: 14px;
+        color: #3568b4;
+        border-bottom: 1px dotted;
+      }
+    }
+    &__tag {
+      margin-right: 9px;
+      margin-bottom: 9px;
+      padding: 3px 8px;
+      font-size: 12px;
+      color: #706f6f;
+      border-radius: 2px;
+      background-color: #eff2f4;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    &__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #8c8c8c;
+      font-size: 14px;
+      font-weight: 300;
+    }
+    &__preferences {
+      display: flex;
+    }
+    &__vacancies {
+      margin-top: 16px;
+      margin-bottom: 10px;
+      &-btn {
+        display: flex;
+        align-items: center;
+        min-width: 100px;
+        .icon-angle-down {
+          margin-left: 11px;
+          font-size: 20px;
+        }
+      }
+    }
+    &__vacancy {
+      position: relative;
+      padding-left: 35px;
+      font-size: 14px;
+      font-weight: 300;
+      &:last-child {
+        .card__vacancy-content {
+          border-bottom: none;
+        }
+      }
+      &-line {
+        position: absolute;
+        top: 0;
+        left: 5px;
+        height: 100%;
+        width: 1px;
+        background-color: #d0d0d0;
+        &:after {
+          position: absolute;
+          content: '';
+          top: 50%;
+          right: 50%;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          border: 1px solid #d0d0d0;
+          background-color: #fff;
+          transform: translate(50%, -50%);
+        }
+      }
+      &-title {
+        color: $links;
+      }
+      &-content {
+        display: flex;
+        align-items: center;
+        padding: 9px 0;
+        border-bottom: 1px solid #f5f7f9;
+      }
+      .icon-ruble-circle {
+        margin-left: 20px;
+        margin-right: 14px;
+        font-size: 18px;
+        color: #b5b5b5;
+      }
+      &-salary {
+        color: #b5b5b5;
+      }
+      .card__icons {
+        margin-left: auto;
+      }
+    }
+    &__img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      height: 65px;
+    }
+    &__avatar {
+      position: relative;
+      margin: 15px auto 10px;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      background-color: #fff;
+      border: 1px solid #feba02;
+      border-radius: 50%;
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+      }
+      i {
+        position: absolute;
+        bottom: -36px;
+        right: 18px;
+        width: 25px;
+        height: 25px;
+      }
+    }
+    &__main {
+      margin-top: 4px;
+    }
+    &__detail {
+      margin-top: 11px;
+      color: #504f4f;
+      font-size: 13px;
+      line-height: 1.54;
+      .card__left {
+        text-align: left;
+        padding-left: 26px;
+      }
+      .card__right {
+        font-weight: 300;
+      }
+    }
+    &__list {
+      padding-left: 10px;
+      margin-left: -17px;
+      margin-bottom: 19px;
+      &-item {
+        position: relative;
+        display: inline-block;
+        padding-left: 12px;
+        margin-left: 10px;
+        &:before {
+          position: absolute;
+          content: '';
+          top: 8px;
+          left: 0;
+          width: 2px;
+          height: 2px;
+          background-color: $links;
+        }
+      }
+      &-link {
+        color: #3568b4;
+        border-bottom: 1px dotted;
+      }
+    }
+    &__status {
+      position: absolute;
+      left: 30px;
+      bottom: 13px;
+      color: #b5b5b5;
+      font-weight: 300;
+      font-size: 12px;
+      &-online {
+        display: block;
+        padding-left: 28px;
+        color: #f6534f;
+      }
+    }
+    &__icons {
+      &-wrap {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .icon-best {
+      font-size: 46px;
+      color: #feae00;
+    }
+    &__footnote {
+      .card__icons-wrap {
+        padding-right: 90px;
+      }
+    }
+    &__best {
+      margin: 7px 0;
+      &:before {
+        box-shadow: 0px 3px 7px 0 rgba(0, 0, 0, 0.15);
+        background-color: #feae00;
+      }
+    }
+    &__recommended {
+      margin: 7px 0;
+      &:before {
+        box-shadow: 0px 3px 7px 0 rgba(0, 0, 0, 0.15);
+        background-color: #1cacea;
+      }
+    }
+    &__not-moderated {
+      background: transparent;
+      .card__title,
+      .card__name,
+      .card__phones,
+      .card__salary,
+      .card__icons,
+      .card__vacancy-salary,
+      .icon-question-circle-alt {
+        color: #cecece !important;
+      }
+      .card__vacancy-line {
+        &:after {
+          background-color: #f5f7f9;
+        }
+      }
+    }
+  }
+  .achievement {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    &__text {
+      height: 24px;
+      padding: 0 10px;
+      font-size: 13px;
+      text-transform: uppercase;
+      line-height: 24px;
+      border-radius: 12px;
+    }
+    &-best-employer {
+      .achievement {
+        &__icon {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 30px;
+          height: 30px;
+          margin-right: 4px;
+          i {
+            font-size: 30px;
+            color: #feae00;
+          }
+          span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 30px;
+            height: 30px;
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 30px;
+          }
+        }
+        &__text {
+          background-color: #feae00;
+        }
+      }
+    }
+    &-recommend {
+      .achievement {
+        &__icon {
+          position: relative;
+          z-index: 5;
+          width: 29px;
+          height: 29px;
+          margin-right: -15px;
+          background-image: url('/img/recommend.svg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        &__text {
+          padding-left: 15px;
+          background-color: #1cacea;
+        }
+      }
+    }
+  }
+  .footnote {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    padding: 0 50px;
+    margin-top: 20px;
+    margin-right: -60px;
+    font-size: 14px;
+    color: #fff;
+    transform: rotate(35deg);
+    transform-origin: top center;
+    &__urgently {
+      background-color: #ffba00;
+    }
+    &__prestige {
+      padding-left: 53px;
+      padding-right: 47px;
+      background-color: #f6534f;
+    }
+    &__text {
+      margin: 0 5px;
+      text-transform: uppercase;
+    }
   }
 </style>

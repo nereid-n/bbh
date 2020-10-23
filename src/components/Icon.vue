@@ -100,6 +100,11 @@ export default {
         box-shadow: 0 0 5px 1px rgba(#c5ffdf, .95);
       }
     }
+    &.disable {
+      color: #c6c6c6;
+      background-color: #f5f7f9;
+      box-shadow: 0 0 5px 2px rgba(198, 198, 198, 0.75);
+    }
   }
 }
 </style>

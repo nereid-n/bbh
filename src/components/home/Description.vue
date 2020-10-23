@@ -19,5 +19,18 @@ name: "Description"
 </script>
 
 <style lang="scss">
-
+.description-main {
+  padding-top: 32px;
+  padding-bottom: 30px;
+  background-color: #fff;
+  .h2 {
+    margin-bottom: 37px;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 25px;
+    line-height: 1.41;
+    font-size: 17px;
+  }
+}
 </style>

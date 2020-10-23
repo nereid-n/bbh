@@ -218,18 +218,55 @@ export default {
   padding: 0;
   list-style: none;
   li {
-    padding-bottom: 10px;
+    padding-bottom: 16px;
   }
   &__content {
+    position: relative;
     display: flex;
+    justify-content: space-between;
+    padding-top: 55px;
+    padding-bottom: 52px;
+    &:before,
+    &:after {
+      position: absolute;
+      content: '';
+      left: 44px;
+      right: 44px;
+      height: 1px;
+      background-color: #d1d1d1;
+    }
+    &:before {
+      top: 0;
+    }
+    &:after {
+      bottom: 0;
+    }
   }
   &__column {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding-left: 30px;
     flex-grow: 1;
+    border-right: 1px solid #d1d1d1;
+    &:last-child {
+      border-right: none;
+    }
+    &:first-child {
+      padding-right: 0;
+    }
+    .h2 {
+      margin-bottom: 22px;
+    }
     .link {
       margin-top: auto;
     }
   }
+}
+
+.link {
+  color: $links;
+  font-size: 17px;
+  border-bottom: 1px solid #bdd3f2;
 }
 </style>

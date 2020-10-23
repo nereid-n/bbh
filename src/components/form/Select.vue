@@ -71,6 +71,10 @@ export default {
       padding: 5px 30px 5px 0;
       background-color: transparent;
     }
+    .select__arrow {
+      right: 0;
+      font-size: 14px;
+    }
     .select__text {
       color: $links;
       font-size: 18px;
