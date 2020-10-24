@@ -5,16 +5,19 @@
       <main class="main">
         <router-view/>
       </main>
+<!--      <Footer/>-->
     </div>
   </div>
 </template>
 
 <script>
   import Header from "./components/layout/Header";
+  import Footer from "@/components/layout/Footer";
 
   export default {
     name: 'App',
     components: {
+      Footer,
       Header
     },
   }
@@ -91,5 +94,11 @@
     color: #000;
     font-size: 18px;
     font-weight: 500;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
   }
 </style>

@@ -3,17 +3,25 @@
     <div class="sorting">
       <Select
           :data="period"
+          :default-value="period.defaultValue"
           class="select-link"
       />
       <Select
           :data="typeSorting"
+          :default-value="typeSorting.defaultValue"
           class="select-link"
       />
       <div class="sorting__map">
         <i class="btn__icon icon-map-marked"></i>
       </div>
       <Select
+          :data="admin"
+          :default-value="admin.defaultValue"
+          class="select-link"
+      />
+      <Select
           :data="actual"
+          :default-value="actual.defaultValue"
           class="select-link"
       />
     </div>
@@ -28,9 +36,9 @@
         :pages="6"
         :activePage="1"
       />
-      <GoToPage/>
-      <CountVacancies/>
-      <ViewResult/>
+      <GoToPage class="search__view-goToPage"/>
+      <CountVacancies class="search__view-countVacancies"/>
+      <ViewResult class="search__view-viewResult"/>
     </div>
   </div>
 </template>
@@ -49,30 +57,27 @@ export default {
     return {
       period: {
         defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: 'За весь период'
-          }
-        ]
+        options: {
+          0: 'За весь период'
+        }
       },
       typeSorting: {
         defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: 'По соответствию'
-          }
-        ]
+        options: {
+          0: 'По соответствию'
+        }
+      },
+      admin: {
+        defaultValue: 0,
+        options: {
+          0: 'Администратор'
+        }
       },
       actual: {
         defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: 'Показать, где сейчас находятся'
-          }
-        ]
+        options: {
+          0: 'По актуальным'
+        }
       },
       cards: [
         {
@@ -560,7 +565,7 @@ export default {
           tags: [],
           date: '26.04.2018',
           favorite: false,
-          status: '2 ч 35 мин',
+          status: 'online',
           vacancies: [
             {
               title: 'Наладчик оборудования 5, 6 разряда',
@@ -730,19 +735,21 @@ export default {
     margin-top: 16px;
     padding-top: 15px;
     border-top: 1px solid #fff;
-    @media (max-width: 1540px) {
+    @media (max-width: $exlarg) {
       width: calc(100% - 300px);
+    }
+    @media (max-width: $xl) {
+      width: 100%;
+      margin-top: 0;
+      border-top: none;
+    }
+    @media (max-width: $lg) {
+      padding-top: 5px;
     }
   }
   .sorting {
     display: flex;
-    .select-wrap {
-      margin-right: 35px;
-      &:last-child {
-        margin-left: auto;
-        margin-right: 0;
-      }
-    }
+    justify-content: space-between;
     &__map {
       color: $links;
       font-size: 25px;
@@ -750,6 +757,9 @@ export default {
   }
   .cards {
     margin-top: 10px;
+    @media (max-width: $lg) {
+      margin-top: 15px;
+    }
   }
   .search__view {
     display: flex;
@@ -760,8 +770,14 @@ export default {
     }
     .viewForm {
       margin-left: 46px;
-      @media (max-width: 1540px) {
+      @media (max-width: $exlarg) {
         margin-left: 20px;
+      }
+    }
+    &-viewResult,
+    &-countVacancies {
+      @media (max-width: $xl) {
+        display: none;
       }
     }
   }

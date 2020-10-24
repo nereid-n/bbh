@@ -4,13 +4,17 @@
   font-size: 14px;
   font-weight: 500;
   border: none;
+  @media (max-width: $exlarg) {
+    padding: 15px 15px;
+    font-size: 13px;
+  }
+  @media (max-width: $xl) {
+    padding: 12px 27px;
+    font-size: 12px;
+  }
   &-primary {
     color: #fff;
     background-color: $primary;
-  }
-  @media (max-width: 1540px) {
-    padding: 15px 15px;
-    font-size: 13px;
   }
   &-outline {
     &-gray {

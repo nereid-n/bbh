@@ -44,6 +44,11 @@ export default {
       font-size: 14px;
       border-radius: 2px;
       border: solid 1px #72797e;
+      @media (max-width: $xl) {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+      }
       &:last-child {
         margin-right: 0;
       }

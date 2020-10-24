@@ -217,8 +217,15 @@ export default {
 .top-list {
   padding: 0;
   list-style: none;
+  @media (max-width: $xl) {
+    margin-bottom: 12px;
+  }
   li {
     padding-bottom: 16px;
+    color: $main;
+    a {
+      color: inherit;
+    }
   }
   &__content {
     position: relative;
@@ -226,6 +233,10 @@ export default {
     justify-content: space-between;
     padding-top: 55px;
     padding-bottom: 52px;
+    @media (max-width: $xl) {
+      padding-top: 32px;
+      padding-bottom: 29px;
+    }
     &:before,
     &:after {
       position: absolute;
@@ -234,6 +245,10 @@ export default {
       right: 44px;
       height: 1px;
       background-color: #d1d1d1;
+      @media (max-width: $xl) {
+        left: 0;
+        right: 0;
+      }
     }
     &:before {
       top: 0;
@@ -249,6 +264,15 @@ export default {
     padding-left: 30px;
     flex-grow: 1;
     border-right: 1px solid #d1d1d1;
+    &:nth-child(1),
+    &:nth-child(2) {
+      display: none;
+    }
+    &:nth-child(3) {
+      @media (max-width: $xl) {
+        padding-left: 0;
+      }
+    }
     &:last-child {
       border-right: none;
     }
@@ -265,8 +289,17 @@ export default {
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
   color: $links;
   font-size: 17px;
   border-bottom: 1px solid #bdd3f2;
+  cursor: pointer;
+  &:hover {
+    color: #488eed;
+  }
+  i {
+    margin-left: 6px;
+  }
 }
 </style>

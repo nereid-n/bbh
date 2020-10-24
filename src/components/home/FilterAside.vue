@@ -297,8 +297,11 @@ export default {
   .filter-aside {
     width: 350px;
     margin-top: 36px;
-    @media (max-width: 1540px) {
+    @media (max-width: $exlarg) {
       width: 280px;
+    }
+    @media (max-width: $xl) {
+      display: none;
     }
     .h2 {
       margin-bottom: 13px;

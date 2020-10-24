@@ -66,6 +66,9 @@ export default {
 
 <style lang="scss">
 .icons-desc {
+  @media (max-width: $xl) {
+    display: none;
+  }
   &__list {
     display: flex;
     justify-content: space-between;
@@ -80,7 +83,7 @@ export default {
     &:last-child {
       padding-right: 0;
     }
-    @media (max-width: 1540px) {
+    @media (max-width: $exlarg) {
       font-size: 11px;
     }
   }

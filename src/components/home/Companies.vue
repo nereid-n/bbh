@@ -65,8 +65,14 @@ export default {
 .company {
   margin-top: 47px;
   margin-bottom: 24px;
+  @media (max-width: $xl) {
+    margin-top: 26px;
+  }
   .h2 {
     margin-bottom: 37px;
+    @media (max-width: $xl) {
+      margin-bottom: 18px;
+    }
   }
   &__list {
     display: flex;
@@ -76,6 +82,15 @@ export default {
     position: relative;
     padding: 22px 0;
     max-width: calc(100% / 6);
+    @media (max-width: $xl) {
+      padding-bottom: 0;
+    }
+    &:nth-child(5),
+    &:nth-child(6 ){
+      @media (max-width: $xl) {
+        display: none;
+      }
+    }
   }
   &__num {
     position: absolute;
@@ -105,9 +120,14 @@ export default {
     min-height: 66px;
     margin-bottom: 7px;
     filter: grayscale(100%);
-    transition: filter .15s;
+    @media (max-width: $xl) {
+      min-height: 47px;
+    }
     .img {
       width: auto !important;
+      @media (max-width: $xl) {
+        max-height: 26px;
+      }
     }
   }
   &__name {
@@ -116,5 +136,4 @@ export default {
     color: #5c6266;
   }
 }
-
 </style>

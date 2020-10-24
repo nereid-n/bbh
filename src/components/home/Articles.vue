@@ -67,18 +67,34 @@ export default {
   justify-content: space-between;
   padding-top: 27px;
   margin-bottom: 33px;
+  @media (max-width: $xl) {
+    flex-wrap: wrap;
+    padding-top: 19px;
+    margin-bottom: 0;
+  }
   &-content {
     padding-top: 39px;
     padding-bottom: 55px;
+    @media (max-width: $xl) {
+      padding-top: 26px;
+      padding-bottom: 38px;
+    }
   }
 }
 .article {
   display: flex;
   max-width: calc(25% - 20px);
+  @media (max-width: $xl) {
+    max-width: unset;
+    width: 50%;
+    margin-bottom: 30px;
+    padding-right: 20px;
+  }
   &__text {
     margin-left: 30px;
   }
   &__title {
+    color: $main;
     font-size: 17px;
   }
   &__date {

@@ -3,7 +3,6 @@
     <div class="container">
       <div class="header__content">
         <div class="header__left">
-          <img class="header__logo" src="/img/logo2.png" alt="">
           <nav class="header__nav">
             <div
               v-for="link in nav"
@@ -67,6 +66,25 @@
           </div>
         </div>
       </div>
+      <div class="header__mobile">
+        <div class="header__mobile-top">
+          <div class="header__contacts">
+            <router-link to="/" class="header__contacts-link">
+              <i class="icon-map-marker"></i>
+              <span>Александровск-Сахалинск</span>
+            </router-link>
+          </div>
+          <div class="header__auth">
+            <button class="header__auth-link">Войдите</button>
+          </div>
+          <div class="header__mobile-btn"><span></span><span></span><span></span></div>
+        </div>
+        <div class="header__mobile-logo">
+          <router-link to="/" class="logo">
+            <img src="/img/logo.png" alt="">
+          </router-link>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -128,11 +146,13 @@
     padding: 14px 0;
     color: #000;
     background-color: #fff;
-    &__logo {
-      margin-right: 40px;
-      @media (max-width: 1540px) {
-        display: none;
-      }
+    @media (max-width: $xl) {
+      padding-top: 3px;
+      padding-bottom: 5px;
+    }
+    @media (max-width: $md) {
+      padding-top: 3px;
+      padding-bottom: 8px;
     }
     &__link {
       color: #000;
@@ -145,7 +165,7 @@
       &-wrap {
         min-width: 165px;
         padding: 6px 0;
-        @media (max-width: 1540px) {
+        @media (max-width: $exlarg) {
           min-width: 140px;
         }
       }
@@ -154,12 +174,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      @media (max-width: $xl) {
+        display: none;
+      }
     }
     &__left {
       display: flex;
       align-items: center;
       width: 46%;
-      @media (max-width: 1540px) {
+      @media (max-width: $exlarg) {
         width: 43%;
       }
     }
@@ -173,6 +196,9 @@
       display: flex;
       justify-content: flex-end;
       padding: 6px 0;
+      @media (max-width: $md) {
+        padding: 0;
+      }
       i {
         padding-right: 7px;
         color: $primary;
@@ -183,19 +209,28 @@
         font-weight: 300;
         color: inherit;
         white-space: nowrap;
+        @media (max-width: $exlarg) {
+          margin-left: 10px;
+        }
+        @media (max-width: $xl) {
+          margin-left: 0;
+        }
+        @media (max-width: $md) {
+          font-size: 12px;
+        }
         span {
           border-bottom: 1px dotted #bfbfbf;
         }
         &:last-child {
           span {
             border-bottom: 1px solid #bfbfbf;
+            @media (max-width: $xl) {
+              border-bottom: 1px dotted;
+            }
           }
         }
         &:hover {
           color: $primary;
-        }
-        @media (max-width: 1540px) {
-          margin-left: 10px;
         }
       }
     }
@@ -204,11 +239,59 @@
       text-align: right;
       font-size: 15px;
       font-weight: 300;
+      @media (max-width: $xl) {
+        margin-left: auto;
+      }
+      @media (max-width: $md) {
+        padding: 0;
+        font-size: 12px;
+      }
       &-link {
         padding: 0;
         color: $links;
         background-color: transparent;
         border: none;
+      }
+    }
+    &__mobile {
+      display: none;
+      @media (max-width: $xl) {
+        display: block;
+      }
+      &-top {
+        display: flex;
+        align-items: center;
+      }
+      &-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 12px;
+        margin-left: 21px;
+        @media (max-width: $md) {
+          height: 9px;
+          margin-left: 12px;
+        }
+        span {
+          width: 17px;
+          height: 2px;
+          background-color: #5c6266;
+          @media (max-width: $md) {
+            width: 12px;
+            height: 1px;
+          }
+        }
+      }
+      &-logo {
+        display: flex;
+        justify-content: center;
+        height: 101px;
+        .logo {
+          width: 118px;
+        }
+        @media (max-width: $md) {
+          margin-top: 9px;
+        }
       }
     }
   }

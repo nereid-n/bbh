@@ -4,7 +4,16 @@
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  @media (max-width: 1540px) {
+  @media (max-width: $exlarg) {
     max-width: 1170px;
+  }
+  @media (max-width: $xl) {
+    max-width: 800px;
+  }
+  @media (max-width: $lg) {
+    max-width: 625px;
+  }
+  @media (max-width: $md) {
+    max-width: 100%;
   }
 }

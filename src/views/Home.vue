@@ -1,19 +1,20 @@
 <template>
   <div>
     <MainTitle/>
-    <Filters/>
-    <FilterView/>
-    <Icons/>
-    <div class="container">
-      <div class="home-main-content">
-        <FilterAside/>
-        <SearchResult/>
-      </div>
-    </div>
-    <Companies/>
-    <TopList/>
-    <Articles/>
-    <Description/>
+<!--    <Filters/>-->
+<!--    <FilterView/>-->
+<!--    <Icons/>-->
+<!--    <div class="container">-->
+<!--      <div class="home-main-content">-->
+<!--        <FilterAside/>-->
+<!--        <SearchResult/>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <Companies/>-->
+<!--    <TopList/>-->
+<!--    <WorkCity/>-->
+<!--    <Articles/>-->
+<!--    <Description/>-->
   </div>
 </template>
 
@@ -28,10 +29,12 @@ import Companies from "@/components/home/Companies";
 import TopList from "@/components/home/TopList";
 import Articles from "@/components/home/Articles";
 import Description from "@/components/home/Description";
+import WorkCity from "@/components/home/WorkCity";
 
 export default {
   name: 'Home',
   components: {
+    WorkCity,
     Description,
     Articles,
     TopList,

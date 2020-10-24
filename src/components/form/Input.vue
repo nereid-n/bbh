@@ -36,8 +36,14 @@ export default {
     padding: 10px 18px;
     background-color: #fff;
     border-radius: 2px;
-    @media (max-width: 1540px) {
+    @media (max-width: $exlarg) {
       min-width: 140px;
+      padding: 10px 10px;
+    }
+    @media (max-width: $xl) {
+      min-width: unset;
+      height: 30px;
+      border-radius: 0;
     }
     input {
       position: absolute;
@@ -48,6 +54,9 @@ export default {
       height: 100%;
       border: none;
       background-color: transparent;
+      @media (max-width: $exlarg) {
+        padding: 10px 10px;
+      }
     }
     &__placeholder {;
       color: $placeholder;

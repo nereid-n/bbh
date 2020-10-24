@@ -34,7 +34,7 @@ export default {
     &:before {
       top: 50%;
     }
-    @media (max-width: 1540px) {
+    @media (max-width: $exlarg) {
       margin-right: 8px;
     }
     &.icon {

@@ -2,6 +2,9 @@
   <div class="filter-view">
     <div class="container">
       <div class="filter-view__content">
+        <router-link to="/" class="advanced-btn btn btn-primary">
+          Расширенный поиск
+        </router-link>
         <div class="my-sda">
           Показать мои объявления
           <span class="user-box__icon-num">2</span>
@@ -32,6 +35,11 @@ export default {
 <style lang="scss">
   .filter-view {
     padding: 5px 0 33px;
+    @media (max-width: $xl) {
+      padding-top: 23px;
+      padding-bottom: 10px;
+      background-color: #fff;
+    }
     &__content {
       display: flex;
       align-items: center;
@@ -39,15 +47,28 @@ export default {
     .pagination {
       margin: 0 auto;
       padding-left: 117px;
-      @media (max-width: 1540px) {
+      @media (max-width: $exlarg) {
         padding-left: 30px;
+      }
+      @media (max-width: $xl) {
+        margin: 0;
+        padding-left: 0;
       }
     }
     .viewForm {
       margin-left: 44px;
-      @media (max-width: 1540px) {
+      @media (max-width: $exlarg) {
         margin-left: 25px;
       }
+      @media (max-width: $xl) {
+        display: none;
+      }
+    }
+  }
+  .advanced-btn {
+    display: none;
+    @media (max-width: $xl) {
+      display: block;
     }
   }
   .my-sda {
@@ -56,6 +77,10 @@ export default {
     font-size: 18px;
     font-weight: 500;
     border-bottom: 1px solid #bfbfbf;
+    @media (max-width: $xl) {
+      margin: 0 auto;
+      font-size: 13px;
+    }
     .user-box__icon-num {
       top: -9px;
       left: calc(100% + 4px);

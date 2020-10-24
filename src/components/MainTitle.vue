@@ -30,6 +30,9 @@
     padding: 13px 0 9px;
     border-top: 1px solid #f5f7f9;
     background-color: #fff;
+    @media (max-width: $xl) {
+      display: none;
+    }
     &__link {
       color: $primary;
       font-size: 14px;

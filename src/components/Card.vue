@@ -1,5 +1,5 @@
 <template>
-  <div :class="cardClass">
+  <div class="card" :class="cardClass">
     <div v-if="data.urgently" class="footnote footnote__urgently">
       <i class="icon-fire"></i>
       <span class="footnote__text">Срочно</span>
@@ -19,10 +19,10 @@
           <img :src="img" alt="">
           <Icon v-if="data.urgently" :icon="'icon-star-alt'"/>
         </div>
-        <i v-if="data.best" class="icon-best"></i>
         <div class="card__left-icon">
           <Icon v-if="data.openToOffers" :icon="'icon-tie'"/>
           <Icon v-if="data.activeSearch" :icon="'icon-dollar'"/>
+          <i v-if="data.best" class="icon-best"></i>
         </div>
       </div>
       <div class="card__right">
@@ -97,7 +97,7 @@
           </div>
         </div>
         <div class="card__bottom">
-          <div class="card__vacancies-btn">
+          <div @click="vacanciesOpen = !vacanciesOpen" class="card__vacancies-btn">
             <template v-if="data.vacancies !== undefined">
               <span>{{vacancies}}</span>
               <i class="icon-angle-down"></i>
@@ -233,7 +233,7 @@ export default {
   data() {
     return {
       type: {
-        vacancy: 'Вакансии',
+        vacancy: 'Вакансия',
         cv: 'Резюме'
       },
       preferences: {
@@ -244,7 +244,8 @@ export default {
         foreigners: 'icon-globe',
         detail: 'icon-ruble-circle',
         weekend: 'icon-dollar-circle'
-      }
+      },
+      vacanciesOpen: false
     }
   },
   computed: {
@@ -274,17 +275,13 @@ export default {
       return `${count} вакансий`;
     },
     cardClass() {
-      let className = 'card';
-      if (this.data.recommended) {
-        className += ' card__recommended';
-      } else if (this.data.best) {
-        className += ' card__best';
-      } else if (!this.data.moderated) {
-        className += ' card__not-moderated';
-      } else if (this.data.prestige || this.data.urgently) {
-        className += ' card__footnote';
-      }
-      return className;
+      return {
+        'card__recommended': this.data.recommended,
+        'card__best': this.data.best,
+        'card__not-moderated': !this.data.moderated,
+        'card__footnote': this.data.prestige || this.data.urgently,
+        'card__vacancies-open': this.vacanciesOpen,
+      };
     }
   },
   methods: {
@@ -310,6 +307,10 @@ export default {
     background-color: #fff;
     overflow: hidden;
     border-bottom: 1px solid #f5f7f9;
+    @media (max-width: $lg) {
+      padding-top: 20px;
+      min-height: 160px;
+    }
     &:before {
       position: absolute;
       top: 0;
@@ -324,22 +325,37 @@ export default {
     }
     &__left {
       min-width: 150px;
-      text-align: center;
+      padding-left: 26px;
+      @media (max-width: $lg) {
+        min-width: 108px;
+        padding-left: 10px;
+      }
       &-icon {
+        width: 72px;
         display: flex;
         justify-content: center;
         .designations__icon {
           margin: 0;
+          @media (max-width: $lg) {
+            position: absolute;
+            top: 27px;
+            left: 50%;
+            min-width: 19px;
+            width: 19px;
+            height: 19px;
+            font-size: 13px;
+            transform: translateX(-50%);
+          }
         }
       }
     }
     &__right {
       width: calc(100% - 150px);
       padding-right: 24px;
-    }
-    &__type {
-      margin-top: 2px;
-      color: $primary;
+      @media (max-width: $lg) {
+        width: calc(100% - 108px);
+        padding-right: 15px;
+      }
     }
     &__type,
     &__top-text {
@@ -347,11 +363,34 @@ export default {
       font-size: 9px;
       text-transform: uppercase;
     }
+    &__type {
+      margin-top: 2px;
+      margin-left: 14px;
+      color: $primary;
+      @media (max-width: $lg) {
+        margin-top: 8px;
+        font-size: 8px;
+      }
+    }
     &__top {
       display: flex;
       align-items: center;
+      @media (max-width: $lg) {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 4px;
+        right: 0;
+        padding: 4px 15px;
+        border-bottom: 1px solid #f5f7f9;
+        background-color: #fff;
+      }
       &-text {
         color: #72797e;
+        @media (max-width: $lg) {
+          font-size: 7px;
+          letter-spacing: 1.19px;
+        }
       }
       i {
         margin-left: 10px;
@@ -362,6 +401,9 @@ export default {
       display: flex;
       justify-content: space-between;
       margin-bottom: 15px;
+      @media (max-width: $lg) {
+        margin-bottom: 10px;
+      }
     }
     &__place-salary {
       display: flex;
@@ -370,6 +412,9 @@ export default {
       i {
         margin-right: 11px;
         font-size: 20px;
+        @media (max-width: $lg) {
+          font-size: 16px;
+        }
       }
     }
     &__place {
@@ -385,6 +430,9 @@ export default {
       align-items: center;
       margin-left: 106px;
       color: #b5b5b5;
+      @media (max-width: $lg) {
+        margin-left: 62px;
+      }
     }
     &__phones {
       display: flex;
@@ -396,9 +444,16 @@ export default {
       font-weight: 300;
       white-space: nowrap;
       overflow: hidden;
+      @media (max-width: $lg) {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
       i {
         margin-right: 5px;
         font-size: 20px;
+        @media (max-width: $lg) {
+          font-size: 16px;
+        }
       }
       a {
         color: inherit;
@@ -408,6 +463,9 @@ export default {
       margin-bottom: 3px;
       color: $links;
       font-size: 20px;
+      @media (max-width: $lg) {
+        font-size: 16px;
+      }
     }
     &__name {
       color: #504f4f;
@@ -417,6 +475,9 @@ export default {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      @media (max-width: $lg) {
+        display: none;
+      }
       &-more {
         margin-left: 4px;
         margin-bottom: 9px;
@@ -447,17 +508,54 @@ export default {
     }
     &__preferences {
       display: flex;
+      @media (max-width: $lg) {
+        position: absolute;
+        top: 27px;
+        left: 50%;
+        transform: translateX(-50%);
+        .designations__icon {
+          min-width: 19px;
+          width: 19px;
+          height: 19px;
+          font-size: 13px;
+          &.icon-year {
+            font-size: 6px;
+          }
+        }
+      }
     }
     &__vacancies {
+      display: none;
       margin-top: 16px;
       margin-bottom: 10px;
       &-btn {
         display: flex;
         align-items: center;
         min-width: 100px;
+        cursor: pointer;
+        @media (max-width: $lg) {
+          font-size: 10px;
+        }
+        &:hover {
+          color: $links;
+        }
         .icon-angle-down {
           margin-left: 11px;
           font-size: 20px;
+          @media (max-width: $lg) {
+            margin-left: 8px;
+            font-size: 16px;
+          }
+        }
+      }
+      &-open {
+        .card__vacancies {
+          display: block;
+        }
+        .card__vacancies-btn {
+          i {
+            transform: rotate(180deg);
+          }
         }
       }
     }
@@ -466,6 +564,13 @@ export default {
       padding-left: 35px;
       font-size: 14px;
       font-weight: 300;
+      @media (max-width: $xl) {
+        padding-left: 20px;
+        font-size: 12px;
+      }
+      @media (max-width: $lg) {
+        font-size: 10px;
+      }
       &:last-child {
         .card__vacancy-content {
           border-bottom: none;
@@ -505,33 +610,56 @@ export default {
         margin-right: 14px;
         font-size: 18px;
         color: #b5b5b5;
+        @media (max-width: $lg) {
+          margin-left: 10px;
+          margin-right: 5px;
+          font-size: 14px;
+        }
       }
       &-salary {
         color: #b5b5b5;
       }
       .card__icons {
         margin-left: auto;
+        @media (max-width: $lg) {
+          font-size: 12px;
+          .icon-star-alt {
+            font-size: 14px;
+          }
+        }
+        i {
+          @media (max-width: $lg) {
+            margin-left: 10px;
+          }
+        }
       }
     }
     &__img {
       display: flex;
-      align-items: center;
       justify-content: center;
+      width: 72px;
+      align-items: center;
       margin-top: 10px;
       height: 65px;
+      @media (max-width: $lg) {
+        width: 80px;
+        margin-top: 4px;
+      }
     }
     &__avatar {
       position: relative;
-      margin: 15px auto 10px;
+      margin: 15px 0 10px;
       justify-content: center;
       width: 72px;
       height: 72px;
+      padding: 3px;
       background-color: #fff;
       border: 1px solid #feba02;
       border-radius: 50%;
+      @media (max-width: $lg) {
+        margin-top: 4px;
+      }
       img {
-        width: 64px;
-        height: 64px;
         border-radius: 50%;
       }
       i {
@@ -544,15 +672,18 @@ export default {
     }
     &__main {
       margin-top: 4px;
+      @media (max-width: $lg) {
+        margin-top: 34px;
+        font-size: 12px;
+      }
     }
     &__detail {
       margin-top: 11px;
       color: #504f4f;
       font-size: 13px;
       line-height: 1.54;
-      .card__left {
-        text-align: left;
-        padding-left: 26px;
+      @media (max-width: $lg) {
+        display: none;
       }
       .card__right {
         font-weight: 300;
@@ -589,9 +720,13 @@ export default {
       color: #b5b5b5;
       font-weight: 300;
       font-size: 12px;
+      @media (max-width: $lg) {
+        left: 20px;
+        font-size: 8px;
+      }
       &-online {
         display: block;
-        padding-left: 28px;
+        padding-left: 15px;
         color: #f6534f;
       }
     }
@@ -599,13 +734,29 @@ export default {
       &-wrap {
         display: flex;
         align-items: center;
+        .card__icons {
+          @media (max-width: $lg) {
+            position: absolute;
+            top: 26px;
+            right: 17px;
+            font-size: 14px;
+          }
+        }
       }
     }
     .icon-best {
       font-size: 46px;
       color: #feae00;
+      @media (max-width: $lg) {
+        display: none;
+      }
     }
     &__footnote {
+      @media (max-width: $lg) {
+        .card__icons-wrap .card__icons {
+          padding-right: 104px;
+        }
+      }
       .card__icons-wrap {
         padding-right: 90px;
       }
@@ -640,6 +791,14 @@ export default {
           background-color: #f5f7f9;
         }
       }
+      .card__top {
+        background-color: transparent;
+      }
+    }
+    &__date {
+      @media (max-width: $lg) {
+        font-size: 10px;
+      }
     }
   }
   .achievement {
@@ -653,6 +812,9 @@ export default {
       text-transform: uppercase;
       line-height: 24px;
       border-radius: 12px;
+      @media (max-width: $lg) {
+        display: none;
+      }
     }
     &-best-employer {
       .achievement {
@@ -704,6 +866,11 @@ export default {
         }
       }
     }
+    &__icon {
+      @media (max-width: $lg) {
+        margin-right: 0 !important;
+      }
+    }
   }
   .footnote {
     position: absolute;
@@ -721,6 +888,13 @@ export default {
     color: #fff;
     transform: rotate(35deg);
     transform-origin: top center;
+    @media (max-width: $lg) {
+      height: 20px;
+      padding: 0 25px;
+      margin-top: 35px;
+      margin-right: -30px;
+      font-size: 8px;
+    }
     &__urgently {
       background-color: #ffba00;
     }
