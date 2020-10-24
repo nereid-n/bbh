@@ -40,9 +40,15 @@ export default {
       padding-bottom: 10px;
       background-color: #fff;
     }
+    @media (max-width: $md) {
+      padding-top: 10px;
+    }
     &__content {
       display: flex;
       align-items: center;
+      @media (max-width: $md) {
+        flex-direction: column;
+      }
     }
     .pagination {
       margin: 0 auto;
@@ -70,6 +76,13 @@ export default {
     @media (max-width: $xl) {
       display: block;
     }
+    @media (max-width: $md) {
+      width: 100%;
+      margin-bottom: 14px;
+      color: $primary;
+      border: 1px solid;
+      background-color: transparent;
+    }
   }
   .my-sda {
     position: relative;
@@ -80,6 +93,9 @@ export default {
     @media (max-width: $xl) {
       margin: 0 auto;
       font-size: 13px;
+    }
+    @media (max-width: $md) {
+      display: none;
     }
     .user-box__icon-num {
       top: -9px;

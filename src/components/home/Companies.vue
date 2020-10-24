@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container company-wrap">
     <div class="company">
       <h2 class="h2">Работа в компаниях:</h2>
       <div class="company__list">
@@ -134,6 +134,11 @@ export default {
     text-align: center;
     line-height: 20px;
     color: #5c6266;
+  }
+  &-wrap {
+    @media (max-width: $md) {
+      display: none;
+    }
   }
 }
 </style>

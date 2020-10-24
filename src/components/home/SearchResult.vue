@@ -121,7 +121,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -281,7 +286,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -330,7 +340,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -472,7 +487,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -519,7 +539,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -546,7 +571,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'cv',
@@ -592,7 +622,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: true,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'cv',
@@ -647,7 +682,12 @@ export default {
           prestige: false,
           moderated: true,
           openToOffers: false,
-          activeSearch: true
+          activeSearch: true,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -694,7 +734,12 @@ export default {
           prestige: false,
           moderated: false,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
         {
           type: 'vacancy',
@@ -721,7 +766,12 @@ export default {
           prestige: true,
           moderated: true,
           openToOffers: false,
-          activeSearch: false
+          activeSearch: false,
+          rubric: [
+            'Благоустройство',
+            'Обслуживание инженерных систем'
+          ],
+          time: '2 часа 30 минут'
         },
       ]
     }
@@ -748,11 +798,25 @@ export default {
     }
   }
   .sorting {
+    position: relative;
     display: flex;
     justify-content: space-between;
+    @media (max-width: $md) {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      .select-wrap {
+        margin-right: 12px;
+      }
+    }
     &__map {
       color: $links;
       font-size: 25px;
+      @media (max-width: $md) {
+        position: absolute;
+        right: -3px;
+        bottom: 5px;
+        font-size: 23px;
+      }
     }
   }
   .cards {
@@ -760,11 +824,20 @@ export default {
     @media (max-width: $lg) {
       margin-top: 15px;
     }
+    @media (max-width: $md) {
+      margin-left: -15px;
+      margin-right: -15px;
+      background-color: #f5f7f9;
+    }
   }
   .search__view {
     display: flex;
     align-items: center;
     margin-top: 34px;
+    @media (max-width: $md) {
+      margin-top: 15px;
+      margin-bottom: 27px;
+    }
     .pagination {
       margin-right: auto;
     }
@@ -777,6 +850,11 @@ export default {
     &-viewResult,
     &-countVacancies {
       @media (max-width: $xl) {
+        display: none;
+      }
+    }
+    &-goToPage {
+      @media (max-width: $md) {
         display: none;
       }
     }

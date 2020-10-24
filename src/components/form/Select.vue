@@ -1,7 +1,7 @@
 <template>
   <div class="select-wrap" :class="wrapClass">
     <div class="input" @click="focus = !focus">
-      <div v-if="data.defaultValue === undefined" class="input__placeholder">
+      <div v-if="defaultValue === undefined" class="input__placeholder">
         {{data.placeholder}}
       </div>
       <div v-else class="select__text" v-html="data.options[value]"></div>

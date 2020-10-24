@@ -19,6 +19,10 @@
         <router-link class="link" to="/">
           Смотреть полностью
         </router-link>
+        <router-link class="mobile-popular__more" to="/">
+          <img src="/img/icons/place.png" alt="">
+          <span>Посмотреть все города</span>
+        </router-link>
       </div>
     </div>
   </div>
@@ -54,6 +58,11 @@ export default {
           img: '/img/emblems/6.png',
           title: 'Работа в Казани',
           link: '/'
+        },
+        {
+          img: '/img/emblems/5.png',
+          title: 'Работа в Челябинске',
+          link: '/'
         }
       ]
     }
@@ -65,28 +74,66 @@ export default {
   .work-city {
     display: none;
     padding-top: 26px;
+    background-color: #f5f7f9;
     @media (max-width: $xl) {
       display: block;
+    }
+    @media (max-width: $md) {
+      padding-top: 18px;
     }
     &__content {
       padding-bottom: 28px;
       border-bottom: 1px solid #d1d1d1;
+      @media (max-width: $md) {
+        padding-bottom: 17px;
+        border-bottom: none;
+      }
     }
     &__items {
       display: flex;
       justify-content: space-between;
       margin-top: 27px;
       margin-bottom: 15px;
+      @media (max-width: $md) {
+        flex-wrap: wrap;
+        margin-top: 21px;
+        margin-bottom: -2px;
+      }
     }
     &__item {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+      @media (max-width: $md) {
+        width: calc(100% / 3);
+        margin-bottom: 17px;
+        font-size: 13px;
+      }
+      &:nth-child(6) {
+        display: none;
+        @media (max-width: $md) {
+          display: flex;
+        }
+      }
     }
     &__img {
       margin-bottom: 10px;
       filter: grayscale(100%);
+      @media (max-width: $md) {
+        width: 72px;
+      }
+    }
+    .link {
+      @media (max-width: $md) {
+        display: none;
+      }
+    }
+    .mobile-popular__more {
+      display: none;
+      @media (max-width: $md) {
+        display: flex;
+      }
     }
   }
 </style>

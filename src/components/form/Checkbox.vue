@@ -48,6 +48,10 @@ export default {
       padding-left: 30px;
       color: $grayText;
       font-size: 14px;
+      @media (max-width: $md) {
+        font-size: 11px;
+        line-height: 17px;
+      }
       &:after {
         content: '';
         position: absolute;

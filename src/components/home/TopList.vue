@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container top-list-wrap">
     <div class="top-list__content">
       <div
           v-for="list in lists"
@@ -284,6 +284,11 @@ export default {
     }
     .link {
       margin-top: auto;
+    }
+  }
+  &-wrap {
+    @media (max-width: $md) {
+      display: none;
     }
   }
 }

@@ -81,6 +81,18 @@
           >
             {{item}}
           </div>
+          <div @click="moreOpen = !moreOpen" class="filter__mobile-item">
+            Еще
+            <div v-if="moreOpen" class="filter__mobile-more">
+              <div
+                  v-for="(item, index) in mainFilter.options"
+                  v-if="index > 2"
+                  class="filter__mobile-more-item"
+              >
+                {{item}}
+              </div>
+            </div>
+          </div>
         </div>
         <Checkbox :data="checkboxModer"/>
         <div class="filter__mobile-menu">
@@ -151,7 +163,8 @@ export default {
           link: '/',
           title: 'Оформить Подписку'
         }
-      ]
+      ],
+      moreOpen: false
     }
   },
   methods: {
@@ -166,6 +179,9 @@ export default {
     @media (max-width: $xl) {
       padding: 0;
       background-color: #fff;
+    }
+    @media (max-width: $md) {
+      padding-bottom: 5px;
     }
     &__content {
       display: flex;
@@ -213,6 +229,11 @@ export default {
         margin-right: 9px;
         @media (max-width: $xl) {
           margin-right: 0;
+        }
+        @media (max-width: $md) {
+          .input__placeholder {
+            display: none;
+          }
         }
       }
       .select-wrap {
@@ -267,6 +288,9 @@ export default {
         padding: 0 9px;
         font-size: 13px;
       }
+      @media (max-width: $md) {
+        padding: 0 5px;
+      }
     }
     &__list {
       display: flex;
@@ -303,6 +327,7 @@ export default {
         border-bottom: 1px solid #d8d8d8;
       }
       &-item {
+        position: relative;
         display: flex;
         align-items: center;
         height: 39px;
@@ -310,6 +335,18 @@ export default {
         font-size: 10px;
         text-transform: uppercase;
         color: #3f3f40;
+        &:nth-child(6) {
+          display: none;
+          @media (max-width: $md) {
+            display: flex;
+          }
+        }
+        &:nth-child(4),
+        &:nth-child(5) {
+          @media (max-width: $md) {
+            display: none;
+          }
+        }
         &.active {
           color: #ff2e20;
           border-bottom: 2px solid #ff2e20;
@@ -317,11 +354,17 @@ export default {
       }
       .checkbox-wrap {
         margin-top: 9px;
+        @media (max-width: $md) {
+          margin-top: 11px;
+        }
       }
       &-menu {
         display: flex;
         justify-content: space-between;
         margin-top: 9px;
+        @media (max-width: $md) {
+          display: none;
+        }
         &-item {
           display: flex;
           flex-direction: column;
@@ -339,6 +382,21 @@ export default {
           font-size: 14px;
           line-height: 12px;
           color: #3f3f40;
+        }
+      }
+      &-more {
+        position: absolute;
+        z-index: 10;
+        top: 100%;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #d8d8d8;
+        border-radius: 2px;
+        &-item {
+          margin: 5px 0;
         }
       }
     }

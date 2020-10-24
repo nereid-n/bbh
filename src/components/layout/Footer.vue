@@ -37,6 +37,22 @@
           </div>
         </div>
       </div>
+      <div class="footer__mobile">
+        <div class="footer__mobile-links">
+          <router-link class="footer__mobile-link" to="/">© BBH.cat</router-link>
+          <router-link class="footer__mobile-link" to="/">Полная версия сайта</router-link>
+        </div>
+        <router-link to="/" class="footer__mobile-btn btn btn-primary">Подать объявление</router-link>
+        <ul class="footer__mobile-menu">
+          <li v-for="item in mobileMenu" class="list__item">
+            <router-link class="list__link" :class="item.className" :to="item.link">
+              <i class="list__icon" :class="item.icon"></i>
+              <span class="list__text">{{item.text}}</span>
+              <span class="list__num">{{item.num}}</span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
     </div>
   </footer>
 </template>
@@ -127,6 +143,43 @@
             classWrap: 'google',
             icon: 'icon-google'
           }
+        ],
+        mobileMenu: [
+          {
+            className: 'active',
+            link: '/',
+            text: 'Поиск',
+            icon: 'icon-search-s',
+            num: ''
+          },
+          {
+            className: '',
+            link: '/',
+            text: 'Мои объявления',
+            icon: 'icon-mouthpiece',
+            num: ''
+          },
+          {
+            className: '',
+            link: '/',
+            text: 'Рубрики',
+            icon: 'icon-suitcase',
+            num: ''
+          },
+          {
+            className: '',
+            link: '/',
+            text: 'Резюме',
+            icon: 'icon-badge',
+            num: ''
+          },
+          {
+            className: '',
+            link: '/',
+            text: 'Сообщения',
+            icon: 'icon-envelope-m1',
+            num: '23'
+          }
         ]
       }
     }
@@ -138,6 +191,12 @@
     padding: 32px 0 37px;
     color: #000;
     font-weight: 300;
+    @media (max-width: $md) {
+      padding-top: 11px;
+      padding-bottom: 0;
+      background-color: #fff;
+      border-top: 1px solid #f5f7f9;
+    }
     &__content {
       display: flex;
       align-items: flex-start;
@@ -145,6 +204,9 @@
       @media (max-width: $xl) {
         padding-left: 0;
         flex-wrap: wrap;
+      }
+      @media (max-width: $md) {
+        justify-content: center;
       }
     }
     &__right {
@@ -156,6 +218,20 @@
         margin-left: 0;
         max-width: unset;
       }
+      @media (max-width: $md) {
+        display: flex;
+        justify-content: center;
+        width: calc(100% + 30px);
+        margin-top: 9px;
+        margin-left: -15px;
+        margin-right: -15px;
+        padding: 11px 0;
+        border-top: 1px solid #f5f7f9;
+        border-bottom: 1px solid #f5f7f9;
+        .footer__home {
+          display: none;
+        }
+      }
     }
     &__nav {
       display: flex;
@@ -166,6 +242,10 @@
         flex-direction: row;
         padding-right: 0;
       }
+      @media (max-width: $md) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
       &-link {
         margin-bottom: 8px;
         color: inherit;
@@ -174,12 +254,19 @@
         @media (max-width: $xl) {
           margin-right: 20px;
         }
+        @media (max-width: $md) {
+          font-size: 11px;
+          margin-bottom: 10px;
+        }
       }
     }
     &__desc {
       margin-top: 4px;
       line-height: 1.5;
       font-size: 10px;
+      @media (max-width: $md) {
+        display: none;
+      }
     }
     &__social {
       display: flex;
@@ -191,6 +278,9 @@
       &-text {
         margin-right: 15px;
         font-size: 12px;
+        @media (max-width: $md) {
+          display: none;
+        }
       }
       &-item {
         display: inline-flex;
@@ -233,6 +323,82 @@
       color: inherit;
       font-size: 12px;
       border-bottom: 1px solid #bfbfbf;
+    }
+    &__mobile {
+      display: none;
+      @media (max-width: $md) {
+        display: block;
+      }
+      &-links {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 8px;
+        padding-bottom: 18px;
+        font-size: 10px;
+      }
+      &-link {
+        border-bottom: 1px solid;
+      }
+      &-btn.btn {
+        display: block;
+        width: 100%;
+        padding: 15px 15px;
+      }
+      &-menu {
+        display: flex;
+        justify-content: space-between;
+        height: 47px;
+        width: calc(100% + 30px);
+        padding: 0 15px;
+        margin-bottom: 0;
+        margin-top: 18px;
+        margin-left: -15px;
+        list-style: none;
+        background-color: #fff;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.45);
+        .list {
+          &__item {
+            max-width: 40px;
+            text-align: center;
+          }
+          &__link {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 7px;
+            color: #72797e;
+            &.active {
+              color: $primary;
+            }
+          }
+          &__icon {
+            margin-bottom: 4px;
+            font-size: 16px;
+          }
+          &__text {
+            font-size: 10px;
+            line-height: 8px;
+          }
+          &__num {
+            position: absolute;
+            top: 3px;
+            left: 55%;
+            min-width: 16px;
+            height: 14px;
+            padding: 0 4px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #fff;
+            background-color: $primary;
+            border-radius: 2px;
+            &:empty {
+              display: none;
+            }
+          }
+        }
+      }
     }
   }
 </style>

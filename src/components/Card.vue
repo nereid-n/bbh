@@ -79,6 +79,10 @@
               Контактное лицо: {{data.contactPerson}}
             </span>
             </div>
+            <button class="card__phones-btn">
+              <i class="icon-mobile"></i>
+              <span>Мобильный телефон</span>
+            </button>
           </div>
           <div class="card__tags" v-if="data.tags.length > 0">
             <div
@@ -186,7 +190,7 @@
         </div>
       </div>
     </div>
-    <div class="card__row" v-if="data.vacancies !== undefined">
+    <div class="card__row card__row-vacancies" v-if="data.vacancies !== undefined">
       <div class="card__left"></div>
       <div class="card__right">
         <div class="card__vacancies">
@@ -214,6 +218,17 @@
       <span v-else>
         Был в сети<br>{{data.status}} назад
       </span>
+    </div>
+    <div class="card__mobile-detail">
+      <div class="card__mobile-detail-item">
+        Прошло времени с момента публикации: <span>{{data.time}}</span>
+      </div>
+      <div class="card__mobile-detail-item">
+        Район работы: <span class="card__mobile-detail-link">{{data.city}}</span> / <span class="card__mobile-detail-link">{{data.area}}</span>
+      </div>
+      <div class="card__mobile-detail-item">
+        Рубрика: <span class="card__mobile-detail-link">{{data.rubric[0]}}</span>, <span class="card__mobile-detail-link">{{data.rubric[1]}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -309,7 +324,7 @@ export default {
     border-bottom: 1px solid #f5f7f9;
     @media (max-width: $lg) {
       padding-top: 20px;
-      min-height: 160px;
+      min-height: 150px;
     }
     &:before {
       position: absolute;
@@ -322,6 +337,16 @@ export default {
     }
     &__row {
       display: flex;
+      &-vacancies {
+        @media (max-width: $md) {
+          .card__left {
+            display: none;
+          }
+          .card__right {
+            width: 100%;
+          }
+        }
+      }
     }
     &__left {
       min-width: 150px;
@@ -329,6 +354,9 @@ export default {
       @media (max-width: $lg) {
         min-width: 108px;
         padding-left: 10px;
+      }
+      @media (max-width: $md) {
+        min-width: 92px;
       }
       &-icon {
         width: 72px;
@@ -346,6 +374,13 @@ export default {
             font-size: 13px;
             transform: translateX(-50%);
           }
+          @media (max-width: $md) {
+            left: 98px;
+            min-width: 15px;
+            width: 15px;
+            height: 15px;
+            font-size: 12px;
+          }
         }
       }
     }
@@ -355,6 +390,10 @@ export default {
       @media (max-width: $lg) {
         width: calc(100% - 108px);
         padding-right: 15px;
+      }
+      @media (max-width: $md) {
+        width: calc(100% - 92px);
+        padding-right: 10px;
       }
     }
     &__type,
@@ -371,6 +410,11 @@ export default {
         margin-top: 8px;
         font-size: 8px;
       }
+      @media (max-width: $md) {
+        margin-top: 6px;
+        margin-left: 2px;
+        letter-spacing: 0.9px;
+      }
     }
     &__top {
       display: flex;
@@ -384,6 +428,9 @@ export default {
         padding: 4px 15px;
         border-bottom: 1px solid #f5f7f9;
         background-color: #fff;
+      }
+      @media (max-width: $md) {
+        padding: 2px 8px;
       }
       &-text {
         color: #72797e;
@@ -404,6 +451,9 @@ export default {
       @media (max-width: $lg) {
         margin-bottom: 10px;
       }
+      @media (max-width: $md) {
+        margin-bottom: 6px;
+      }
     }
     &__place-salary {
       display: flex;
@@ -421,6 +471,9 @@ export default {
       display: flex;
       align-items: center;
       color: #3568b4;
+      @media (max-width: $md) {
+        display: none;
+      }
       span {
         border-bottom: 1px dotted #3568b4;
       }
@@ -432,6 +485,12 @@ export default {
       color: #b5b5b5;
       @media (max-width: $lg) {
         margin-left: 62px;
+      }
+      @media (max-width: $md) {
+        margin-left: 0;
+        i {
+          font-size: 14px;
+        }
       }
     }
     &__phones {
@@ -458,6 +517,28 @@ export default {
       a {
         color: inherit;
       }
+      .icon-phone-alt,
+      div {
+        @media (max-width: $md) {
+          display: none;
+        }
+      }
+      &-btn {
+        display: none;
+        @media (max-width: $md) {
+          display: flex;
+          align-items: center;
+          padding: 0 8px;
+          color: #ff2e20;
+          font-size: 10px;
+          background-color: #f5f7f9;
+          border: 1px solid #e8e8e8;
+          border-radius: 2px;
+          i {
+            font-size: 14px;
+          }
+        }
+      }
     }
     &__title {
       margin-bottom: 3px;
@@ -465,6 +546,9 @@ export default {
       font-size: 20px;
       @media (max-width: $lg) {
         font-size: 16px;
+      }
+      @media (max-width: $md) {
+        font-size: 14px;
       }
     }
     &__name {
@@ -519,7 +603,24 @@ export default {
           height: 19px;
           font-size: 13px;
           &.icon-year {
+            font-size: 8px;
+            span {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      @media (max-width: $md) {
+        .designations__icon {
+          min-width: 15px;
+          width: 15px;
+          height: 15px;
+          font-size: 12px;
+          &.icon-year {
             font-size: 6px;
+            span {
+              font-size: 10px;
+            }
           }
         }
       }
@@ -528,6 +629,10 @@ export default {
       display: none;
       margin-top: 16px;
       margin-bottom: 10px;
+      @media (max-width: $md) {
+        margin-bottom: 20px;
+        margin-top: 10px;
+      }
       &-btn {
         display: flex;
         align-items: center;
@@ -571,6 +676,9 @@ export default {
       @media (max-width: $lg) {
         font-size: 10px;
       }
+      @media (max-width: $md) {
+        padding-left: 12px;
+      }
       &:last-child {
         .card__vacancy-content {
           border-bottom: none;
@@ -583,6 +691,9 @@ export default {
         height: 100%;
         width: 1px;
         background-color: #d0d0d0;
+        @media (max-width: $md) {
+          display: none;
+        }
         &:after {
           position: absolute;
           content: '';
@@ -615,9 +726,15 @@ export default {
           margin-right: 5px;
           font-size: 14px;
         }
+        @media (max-width: $md) {
+          display: none;
+        }
       }
       &-salary {
         color: #b5b5b5;
+        @media (max-width: $md) {
+          display: none;
+        }
       }
       .card__icons {
         margin-left: auto;
@@ -637,13 +754,16 @@ export default {
     &__img {
       display: flex;
       justify-content: center;
-      width: 72px;
       align-items: center;
+      width: 72px;
       margin-top: 10px;
       height: 65px;
       @media (max-width: $lg) {
         width: 80px;
         margin-top: 4px;
+      }
+      @media (max-width: $md) {
+        justify-content: flex-start;
       }
     }
     &__avatar {
@@ -675,6 +795,9 @@ export default {
       @media (max-width: $lg) {
         margin-top: 34px;
         font-size: 12px;
+      }
+      @media (max-width: $md) {
+        font-size: 10px;
       }
     }
     &__detail {
@@ -724,10 +847,17 @@ export default {
         left: 20px;
         font-size: 8px;
       }
+      @media (max-width: $md) {
+        left: 12px;
+        bottom: 44px;
+      }
       &-online {
         display: block;
         padding-left: 15px;
         color: #f6534f;
+        @media (max-width: $md) {
+          padding-left: 0;
+        }
       }
     }
     &__icons {
@@ -741,6 +871,10 @@ export default {
             right: 17px;
             font-size: 14px;
           }
+          @media (max-width: $md) {
+            top: 22px;
+            right: 5px;
+          }
         }
       }
     }
@@ -752,13 +886,19 @@ export default {
       }
     }
     &__footnote {
-      @media (max-width: $lg) {
-        .card__icons-wrap .card__icons {
+      .card__icons-wrap .card__icons {
+        @media (max-width: $lg) {
           padding-right: 104px;
+        }
+        @media (max-width: $md) {
+          padding-right: 0;
         }
       }
       .card__icons-wrap {
         padding-right: 90px;
+        @media (max-width: $lg) {
+          padding-right: 0;
+        }
       }
     }
     &__best {
@@ -798,6 +938,20 @@ export default {
     &__date {
       @media (max-width: $lg) {
         font-size: 10px;
+      }
+    }
+    &__mobile {
+      &-detail {
+        display: none;
+        color: #b5b5b5;
+        font-size: 8px;
+        padding: 1px 12px;
+        @media (max-width: $md) {
+          display: block;
+        }
+        &-link {
+          color: $links;
+        }
       }
     }
   }
@@ -870,6 +1024,19 @@ export default {
       @media (max-width: $lg) {
         margin-right: 0 !important;
       }
+      @media (max-width: $md) {
+        width: 20px !important;
+        height: 20px !important;
+        i {
+          font-size: 20px !important;
+        }
+        span {
+          width: 20px !important;
+          height: 20px !important;
+          font-size: 12px !important;
+          line-height: 20px !important;
+        }
+      }
     }
   }
   .footnote {
@@ -895,6 +1062,22 @@ export default {
       margin-right: -30px;
       font-size: 8px;
     }
+    @media (max-width: $md) {
+      top: 50px;
+      right: 10px;
+      width: 19px;
+      height: 19px;
+      padding: 0 !important;
+      margin: 0;
+      font-size: 12px;
+      border-radius: 50%;
+      transform: rotate(0);
+      transform-origin: center;
+      i:first-child,
+      span {
+        display: none;
+      }
+    }
     &__urgently {
       background-color: #ffba00;
     }
@@ -902,6 +1085,10 @@ export default {
       padding-left: 53px;
       padding-right: 47px;
       background-color: #f6534f;
+      @media (max-width: $lg) {
+        padding-left: 20px;
+        padding-right: 28px;
+      }
     }
     &__text {
       margin: 0 5px;

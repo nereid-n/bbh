@@ -151,7 +151,7 @@
       padding-bottom: 5px;
     }
     @media (max-width: $md) {
-      padding-top: 3px;
+      padding-top: 10px;
       padding-bottom: 8px;
     }
     &__link {

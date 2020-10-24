@@ -34,6 +34,7 @@ export default {
     min-width: 195px;
     height: 45px;
     padding: 10px 18px;
+    color: $main;
     background-color: #fff;
     border-radius: 2px;
     @media (max-width: $exlarg) {

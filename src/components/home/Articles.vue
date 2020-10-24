@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container articles-wrap">
     <div class="articles-content">
       <h2 class="h2">Статьи:</h2>
       <div class="articles">
@@ -78,6 +78,11 @@ export default {
     @media (max-width: $xl) {
       padding-top: 26px;
       padding-bottom: 38px;
+    }
+  }
+  &-wrap {
+    @media (max-width: $md) {
+      display: none;
     }
   }
 }

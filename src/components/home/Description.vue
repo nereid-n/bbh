@@ -48,19 +48,37 @@ export default {
     padding-top: 26px;
     padding-bottom: 90px;
   }
+  @media (max-width: $md) {
+    padding-bottom: 36px;
+  }
   .h2 {
     margin-bottom: 37px;
+    @media (max-width: $md) {
+      margin-bottom: 15px;
+    }
   }
   p {
     margin-top: 0;
     margin-bottom: 25px;
     line-height: 1.41;
     font-size: 17px;
+    @media (max-width: $md) {
+      margin-bottom: 20px;
+    }
   }
   &__text {
     padding-bottom: 30px;
     @media (max-width: $xl) {
       padding-bottom: 12px;
+    }
+    @media (max-width: $md) {
+      padding-bottom: 0;
+      p:first-child {
+        text-overflow: ellipsis;
+        height: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+      }
     }
   }
   
@@ -82,6 +100,12 @@ export default {
     .dm__lg,
     .dm__lg {
       display: block;
+    }
+    p:first-child {
+      height: unset;
+      overflow: unset;
+      text-overflow: unset;
+      white-space: unset;
     }
   }
 }
