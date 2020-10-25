@@ -191,6 +191,7 @@
     padding: 32px 0 37px;
     color: #000;
     font-weight: 300;
+    background-color: #fff;
     @media (max-width: $md) {
       padding-top: 11px;
       padding-bottom: 0;

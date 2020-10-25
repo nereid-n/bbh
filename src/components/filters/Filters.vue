@@ -26,15 +26,14 @@
             </router-link>
           </div>
           <div class="filter__form">
-            <Select
-                :data="mainFilter"
-                :defaultValue="0"
-                @input="onInput"
+            <SelectFilter
+                :default-value="defaultValues.mainFilter"
+                @onInput="onInput"
             />
-            <Input :data="keywords"/>
-            <Select :data="region"/>
-            <Select :data="area"/>
-            <Select :data="metro"/>
+            <Input class="filter__form-input" :data="keywords"/>
+            <Select class="filter__form-input" :data="region"/>
+            <Select class="filter__form-input" :data="area"/>
+            <Select class="filter__form-input" :data="metro"/>
             <button class="filter__btn">Найти</button>
           </div>
           <div class="filter__bottom">
@@ -73,27 +72,7 @@
         </div>
       </div>
       <div class="filter__mobile">
-        <div class="filter__mobile-main">
-          <div
-              v-for="(item, key, index) in mainFilter.options"
-              class="filter__mobile-item"
-              :class="{'active': key == mainFilter.defaultValue}"
-          >
-            {{item}}
-          </div>
-          <div @click="moreOpen = !moreOpen" class="filter__mobile-item">
-            Еще
-            <div v-if="moreOpen" class="filter__mobile-more">
-              <div
-                  v-for="(item, index) in mainFilter.options"
-                  v-if="index > 2"
-                  class="filter__mobile-more-item"
-              >
-                {{item}}
-              </div>
-            </div>
-          </div>
-        </div>
+        <FilterMobileMain :active="defaultValues.mainFilter"/>
         <Checkbox :data="checkboxModer"/>
         <div class="filter__mobile-menu">
           <router-link
@@ -116,20 +95,15 @@
 import Select from "@/components/form/Select";
 import Input from "@/components/form/Input";
 import Checkbox from "@/components/form/Checkbox";
+import SelectFilter from "@/components/filters/SelectFilter";
+import FilterMobileMain from "@/components/home/FilterMobileMain";
 export default {
   name: "Filters",
-  components: {Checkbox, Input, Select},
+  components: {FilterMobileMain, SelectFilter, Checkbox, Input, Select},
   data() {
     return {
-      mainFilter: {
-        defaultValue: 0,
-        options: {
-          0: 'Вакансии + Резюме',
-          1: 'Вакансии',
-          2: 'Резюме',
-          3: 'Телефон',
-          4: 'Индекс'
-        }
+      defaultValues: {
+        mainFilter: this.$route.params.type
       },
       keywords: {
         placeholder: 'Введите ключевые слова (например юрист)'
@@ -163,13 +137,14 @@ export default {
           link: '/',
           title: 'Оформить Подписку'
         }
-      ],
-      moreOpen: false
+      ]
     }
   },
   methods: {
-    onInput(value) {}
-  }
+    onInput(value) {
+      this.$emit('changeFilter', value);
+    }
+  },
 }
 </script>
 
@@ -180,13 +155,13 @@ export default {
       padding: 0;
       background-color: #fff;
     }
-    @media (max-width: $md) {
-      padding-bottom: 5px;
-    }
     &__content {
       display: flex;
     }
     &__main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       flex-grow: 1;
       padding-left: 10px;
       @media (max-width: $xl) {
@@ -223,22 +198,41 @@ export default {
         margin-top: 0;
         padding: 2px;
       }
-      .select-wrap,
-      .input-wrap {
+      &-input {
         flex-grow: 1;
         margin-right: 9px;
+        @media (max-width: $exlarg) {
+          font-size: 14px;
+        }
         @media (max-width: $xl) {
-          margin-right: 0;
+          margin-right: 4px;
+          .input {
+            min-width: unset;
+            height: 30px;
+            border-radius: 0;
+          }
+          .input__placeholder {
+            font-size: 12px;
+          }
         }
         @media (max-width: $md) {
           .input__placeholder {
             display: none;
           }
         }
-      }
-      .select-wrap {
-        @media (max-width: $xl) {
-          display: none;
+        &.input-filled {
+          .select__text,
+          .select__arrow:before {
+            color: $primary;
+          }
+        }
+        input {
+          color: $primary;
+        }
+        &.select-wrap {
+          @media (max-width: $xl) {
+            display: none;
+          }
         }
       }
     }
@@ -312,6 +306,8 @@ export default {
       font-size: 14px;
     }
     &__logo {
+      width: 148px;
+      min-width: 148px;
       @media (max-width: $xl) {
         display: none;
       }
@@ -386,7 +382,7 @@ export default {
       }
       &-more {
         position: absolute;
-        z-index: 10;
+        z-index: 15;
         top: 100%;
         right: 0;
         display: flex;
@@ -397,6 +393,7 @@ export default {
         border-radius: 2px;
         &-item {
           margin: 5px 0;
+          color: inherit;
         }
       }
     }

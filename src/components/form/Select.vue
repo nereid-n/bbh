@@ -4,7 +4,16 @@
       <div v-if="defaultValue === undefined" class="input__placeholder">
         {{data.placeholder}}
       </div>
-      <div v-else class="select__text" v-html="data.options[value]"></div>
+      <div v-else class="select__text">
+        <span
+            v-if="typeof data.options[value] === 'string'"
+            v-html="data.options[value]"
+        ></span>
+        <template v-else>
+          <img v-if="data.options[value].img !== undefined" :src="data.options[value].img" alt="">
+          <span v-html="data.options[value].text"></span>
+        </template>
+      </div>
       <div class="select__arrow"></div>
     </div>
     <div class="select__dropdown">
@@ -13,7 +22,23 @@
           class="select__dropdown-item"
           @click="clickItem(key)"
       >
-        {{value}}
+        <span
+            class="select__dropdown-item-content"
+            v-if="typeof value === 'string'"
+            v-html="value"
+        ></span>
+        <template v-else>
+          <router-link
+              class="select__dropdown-item-content"
+              v-if="value.link !== undefined"
+              :to="value.link"
+              v-html="value.text"
+          ></router-link>
+          <div v-else class="select__dropdown-item-content">
+            <img v-if="value.img !== undefined" :src="value.img" alt="">
+            <span v-html="value.text"></span>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -28,6 +53,7 @@ export default {
     clickItem(key) {
       this.focus = false;
       this.value = key;
+      this.onInput(key);
     }
   },
   mixins: [inputMixin]
@@ -77,21 +103,35 @@ export default {
       z-index: 50;
       top: calc(100% + 4px);
       left: 0;
-      width: 100%;
+      min-width: 100%;
       font-size: 14px;
       background-color: #fff;
       border: 1px solid #e8e8e8;
       border-radius: 2px;
       &-item {
-        padding: 10px 18px;
         cursor: pointer;
-        @media (max-width: $exlarg) {
-          padding: 10px 10px;
-        }
         &:hover {
           color: #fff;
           background-color: $primary;
         }
+        a {
+          color: inherit;
+        }
+        &-content {
+          display: flex;
+          align-items: center;
+          padding: 10px 18px;
+          @media (max-width: $exlarg) {
+            padding: 10px 10px;
+          }
+        }
+      }
+    }
+    &__text {
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 15px;
       }
     }
   }

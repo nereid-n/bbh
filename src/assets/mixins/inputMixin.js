@@ -12,21 +12,6 @@ export default {
     },
     defaultValue: {}
   },
-  // methods: {
-  //   onBlur() {
-  //     this.focus = false;
-  //     this.touched = true;
-  //     this.$emit('blur');
-  //   },
-  //   onInput() {
-  //     this.$emit('input', this.value);
-  //   }
-  // },
-  created() {
-    if (this.defaultValue !== undefined) {
-      this.value = this.defaultValue;
-    }
-  },
   computed: {
     wrapClass() {
       return {
@@ -34,5 +19,15 @@ export default {
         'input-filled': this.value !== ''
       };
     }
-  }
+  },
+  methods: {
+    onInput(value) {
+      this.$emit('onInput', {value: value, name: this.data.name});
+    }
+  },
+  created() {
+    if (this.defaultValue !== undefined) {
+      this.value = this.defaultValue;
+    }
+  },
 }

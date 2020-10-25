@@ -3,12 +3,12 @@
     <MainTitle/>
     <MobileFind/>
     <MobilePopular/>
-    <Filters/>
+    <Filters @changeFilter="getItems"/>
     <FilterView/>
     <Icons/>
     <div class="container home-main-content">
       <FilterAside/>
-      <SearchResult/>
+      <SearchResult :cards="cards"/>
     </div>
     <Companies/>
     <TopList/>
@@ -21,19 +21,19 @@
 
 <script>
 import MainTitle from "../components/MainTitle";
-import Filters from "../components/home/Filters";
-import FilterView from "@/components/home/FilterView";
+import Filters from "../components/filters/Filters";
+import FilterView from "@/components/filters/FilterView";
 import Icons from "@/components/home/Icons";
-import FilterAside from "@/components/home/FilterAside";
+import FilterAside from "@/components/filters/FilterAside";
 import SearchResult from "@/components/home/SearchResult";
 import Companies from "@/components/home/Companies";
 import TopList from "@/components/home/TopList";
 import Articles from "@/components/home/Articles";
 import Description from "@/components/home/Description";
 import WorkCity from "@/components/home/WorkCity";
-import MobileFind from "@/components/home/MobileFind";
-import MobilePopular from "@/components/home/MobilePopular";
-import MobileCompanies from "@/components/home/MobileCompanies";
+import MobileFind from "@/components/home/mobile/MobileFind";
+import MobilePopular from "@/components/home/mobile/MobilePopular";
+import MobileCompanies from "@/components/home/mobile/MobileCompanies";
 
 export default {
   name: 'Home',
@@ -52,6 +52,22 @@ export default {
     FilterView,
     Filters,
     MainTitle
+  },
+  data() {
+    return {
+      cards: []
+    }
+  },
+  methods: {
+    getItems(value) {
+      this.$store.dispatch(`vacancies/GET_${value.value.toUpperCase()}`)
+          .then(res => {
+            this.cards = res;
+          });
+    }
+  },
+  created() {
+    this.getItems({value: this.$route.params.type});
   }
 }
 </script>

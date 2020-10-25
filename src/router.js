@@ -13,7 +13,8 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      params: {type: 'vacancies'}
     },
     {
       path: '/phone',
