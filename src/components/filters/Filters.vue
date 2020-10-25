@@ -96,14 +96,14 @@ import Select from "@/components/form/Select";
 import Input from "@/components/form/Input";
 import Checkbox from "@/components/form/Checkbox";
 import SelectFilter from "@/components/filters/SelectFilter";
-import FilterMobileMain from "@/components/home/FilterMobileMain";
+import FilterMobileMain from "@/components/home/mobile/FilterMobileMain";
 export default {
   name: "Filters",
   components: {FilterMobileMain, SelectFilter, Checkbox, Input, Select},
   data() {
     return {
       defaultValues: {
-        mainFilter: this.$route.params.type
+        mainFilter: this.$route.params.type || 'vacancies_cv'
       },
       keywords: {
         placeholder: 'Введите ключевые слова (например юрист)'
@@ -183,6 +183,10 @@ export default {
         margin-right: 25px;
         color: #5c6266;
         border-bottom: 1px solid #bfbfbf;
+        &:hover {
+          color: $links;
+          cursor: pointer;
+        }
         &:last-child {
           margin-right: 0;
           margin-left: auto;
@@ -262,6 +266,9 @@ export default {
           margin-left: 9px;
           font-size: 10px;
           cursor: pointer;
+          &:hover {
+            color: $primary;
+          }
         }
       }
       &-clear {
@@ -270,6 +277,10 @@ export default {
         font-size: 14px;
         font-weight: 300;
         border-bottom: 1px dotted #3568b4;
+        cursor: pointer;
+        &:hover {
+          color: $primary;
+        }
       }
     }
     &__btn {
@@ -295,6 +306,9 @@ export default {
       }
       &-text {
         color: $primary;
+        &:hover {
+          color: $links;
+        }
       }
       &-num {
         color: $placeholder;
@@ -304,6 +318,10 @@ export default {
       margin-left: 49px;
       color: $placeholder;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        color: $primary;
+      }
     }
     &__logo {
       width: 148px;

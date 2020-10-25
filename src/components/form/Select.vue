@@ -11,7 +11,7 @@
         ></span>
         <template v-else>
           <img v-if="data.options[value].img !== undefined" :src="data.options[value].img" alt="">
-          <span v-html="data.options[value].text"></span>
+          <span v-html="data.options[value].value"></span>
         </template>
       </div>
       <div class="select__arrow"></div>
@@ -32,11 +32,11 @@
               class="select__dropdown-item-content"
               v-if="value.link !== undefined"
               :to="value.link"
-              v-html="value.text"
+              v-html="value.value"
           ></router-link>
           <div v-else class="select__dropdown-item-content">
             <img v-if="value.img !== undefined" :src="value.img" alt="">
-            <span v-html="value.text"></span>
+            <span v-html="value.value"></span>
           </div>
         </template>
       </div>
@@ -109,6 +109,7 @@ export default {
       border: 1px solid #e8e8e8;
       border-radius: 2px;
       &-item {
+        white-space: nowrap;
         cursor: pointer;
         &:hover {
           color: #fff;

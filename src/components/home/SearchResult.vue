@@ -3,12 +3,12 @@
     <div class="sorting">
       <Select
           :data="period"
-          :default-value="period.defaultValue"
+          :default-value="values.period"
           class="select-link"
       />
       <Select
           :data="typeSorting"
-          :default-value="typeSorting.defaultValue"
+          :default-value="values.typeSorting"
           class="select-link"
       />
       <div class="sorting__map">
@@ -16,12 +16,12 @@
       </div>
       <Select
           :data="admin"
-          :default-value="admin.defaultValue"
+          :default-value="values.admin"
           class="select-link"
       />
       <Select
           :data="actual"
-          :default-value="actual.defaultValue"
+          :default-value="values.actual"
           class="select-link"
       />
     </div>
@@ -33,7 +33,7 @@
     </div>
     <div class="search__view">
       <Pagination
-        :pages="6"
+        :pages="10"
         :activePage="1"
       />
       <GoToPage class="search__view-goToPage"/>
@@ -46,7 +46,7 @@
 <script>
 import Select from "@/components/form/Select";
 import Card from "@/components/Card";
-import Pagination from "@/Pagination";
+import Pagination from "@/components/Pagination";
 import GoToPage from "@/components/home/GoToPage";
 import CountVacancies from "@/components/home/CountVacancies";
 import ViewResult from "@/components/home/ViewResult";
@@ -55,28 +55,53 @@ export default {
   components: {ViewResult, CountVacancies, GoToPage, Pagination, Card, Select},
   data() {
     return {
+      values: {
+        period: 0,
+        typeSorting: 0,
+        admin: 0,
+        actual: 0
+      },
       period: {
-        defaultValue: 0,
+        name: 'period',
         options: {
-          0: 'За весь период'
+          0: 'За весь период',
+          1: 'С последнего посещения',
+          2: 'За последние сутки',
+          3: 'За последние 3 дня',
+          4: 'За последнюю неделю',
+          5: 'За последние 2 недели',
+          6: 'За последний месяц',
         }
       },
       typeSorting: {
-        defaultValue: 0,
+        name: 'typeSorting',
         options: {
-          0: 'По соответствию'
+          0: 'По соответствию',
+          1: 'По дате',
+          2: 'По убыванию зарплаты',
+          3: 'По возрастанию зарплаты',
+          4: 'По номеру домов "только нечётные"',
+          5: 'По номеру домов "только чётные"',
+          6: 'Номера домов по возрастанию',
+          7: 'Номера домов по убыванию',
         }
       },
       admin: {
-        defaultValue: 0,
+        name: 'admin',
         options: {
-          0: 'Администратор'
+          0: 'Администратор',
+          1: 'Все',
+          2: 'Мои',
+          3: 'Полушкина',
+          4: 'Матвеева',
         }
       },
       actual: {
-        defaultValue: 0,
+        name: 'actual',
         options: {
-          0: 'По актуальным'
+          0: 'По актуальным',
+          1: 'По всем',
+          2: 'По архивным'
         }
       },
     }
@@ -91,7 +116,7 @@ export default {
 
 <style lang="scss">
   .search-result {
-    width: calc(100% - 400px);
+    width: calc(100% - 460px);
     margin-top: 16px;
     padding-top: 15px;
     border-top: 1px solid #fff;
@@ -128,6 +153,11 @@ export default {
         font-size: 23px;
       }
     }
+    .input {
+      @media (max-width: $lg) {
+        min-width: unset;
+      }
+    }
   }
   .cards {
     margin-top: 10px;
@@ -154,7 +184,12 @@ export default {
     .viewForm {
       margin-left: 46px;
       @media (max-width: $exlarg) {
-        margin-left: 20px;
+        margin-left: 15px;
+      }
+      &__text {
+        @media (max-width: $exlarg) {
+          margin-right: 10px;
+        }
       }
     }
     &-viewResult,

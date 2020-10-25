@@ -24,42 +24,42 @@ export default {
         options: {
           0: {
             img: '/img/phones/ru.png',
-            text: '<span class="country">Россия</span>' +
+            value: '<span class="country">Россия</span>' +
                 '<span class="country-num">+7</span>'
           },
           1: {
             img: '/img/phones/uk.png',
-            text: '<span class="country">Украина</span>' +
+            value: '<span class="country">Украина</span>' +
                 '<span class="country-num">+3</span>'
           },
           2: {
             img: '/img/phones/kk.png',
-            text: '<span class="country">Казахстан</span>' +
+            value: '<span class="country">Казахстан</span>' +
                 '<span class="country-num">+7</span>'
           },
           3: {
             img: '/img/phones/az.png',
-            text: '<span class="country">Азербайджан</span>' +
+            value: '<span class="country">Азербайджан</span>' +
                 '<span class="country-num">+994</span>'
           },
           4: {
             img: '/img/phones/hy.png',
-            text: '<span class="country">Армения</span>' +
+            value: '<span class="country">Армения</span>' +
                 '<span class="country-num">+374</span>'
           },
           5: {
             img: '/img/phones/tg.png',
-            text: '<span class="country">Таджикистан</span>' +
+            value: '<span class="country">Таджикистан</span>' +
                 '<span class="country-num">+992</span>'
           },
           6: {
             img: '/img/phones/mo.png',
-            text: '<span class="country">Молдова</span>' +
+            value: '<span class="country">Молдова</span>' +
                 '<span class="country-num">+373</span>'
           },
           7: {
             img: '/img/phones/uz.png',
-            text: '<span class="country">Узбекистан</span>' +
+            value: '<span class="country">Узбекистан</span>' +
                 '<span class="country-num">+998</span>'
           }
         }

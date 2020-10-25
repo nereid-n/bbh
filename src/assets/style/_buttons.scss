@@ -20,14 +20,22 @@
   &-primary {
     color: #fff;
     background-color: $primary;
+    &:hover {
+      background-color: #ff6868;
+    }
   }
   &-outline {
     &-gray {
       color: #72797e;
       font-size: 16px;
+      font-weight: 400;
       background-color: transparent;
       border-radius: 2px;
       border: solid 1px #72797e;
+      &:hover {
+        color: $primary;
+        border-color: $primary;
+      }
     }
   }
 }

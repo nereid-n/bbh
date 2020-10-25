@@ -101,6 +101,9 @@ export default {
   &__title {
     color: $main;
     font-size: 17px;
+    &:hover {
+      color: $primary;
+    }
   }
   &__date {
     margin-bottom: 7px;

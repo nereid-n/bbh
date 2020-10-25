@@ -8,11 +8,11 @@ export default {
           'vacancies' : 'Вакансии',
           'cv' : 'Резюме',
           'phone' : {
-            text: 'Телефон',
+            value: 'Телефон',
             link: {name: 'phone'}
           },
           'postcode' : {
-            text: 'Индекс',
+            value: 'Индекс',
             link: {name: 'postcode'}
           }
         }

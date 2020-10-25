@@ -67,7 +67,15 @@ export default {
     }
   },
   created() {
-    this.getItems({value: this.$route.params.type});
+    let type = this.$route.params.type === undefined ? 'vacancies_cv' : this.$route.params.type;
+    this.getItems({value: type});
+  },
+  mounted() {
+    if (this.$route.params.type !== undefined) {
+      let home = document.getElementsByClassName('home')[0];
+      home.classList.remove('home-first');
+      home.classList.add('home-second');
+    }
   }
 }
 </script>

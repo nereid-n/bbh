@@ -8,7 +8,7 @@
         <h2 class="h2">{{list.title}}</h2>
         <ul class="top-list">
           <li v-for="li in list.list">
-            <router-link :to="li.link">
+            <router-link class="top-list__item" :to="li.link">
               {{li.title}}
             </router-link>
           </li>
@@ -220,6 +220,11 @@ export default {
   @media (max-width: $xl) {
     margin-bottom: 12px;
   }
+  &__item {
+    &:hover {
+      color: $primary;
+    }
+  }
   li {
     padding-bottom: 16px;
     color: $main;
@@ -264,9 +269,11 @@ export default {
     padding-left: 30px;
     flex-grow: 1;
     border-right: 1px solid #d1d1d1;
-    &:nth-child(1),
-    &:nth-child(2) {
-      display: none;
+    @media (max-width: $xl) {
+      &:nth-child(1),
+      &:nth-child(2) {
+        display: none;
+      }
     }
     &:nth-child(3) {
       @media (max-width: $xl) {

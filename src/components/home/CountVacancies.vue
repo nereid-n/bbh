@@ -5,6 +5,7 @@
     </div>
     <Select
         class="viewForm__input viewForm__input-count"
+        :default-value="value"
         :data="data"
     />
   </div>
@@ -17,14 +18,15 @@ export default {
   components: {Select},
   data() {
     return {
+      value: 25,
       data: {
-        defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: '25'
-          }
-        ]
+        options: {
+          5: '5',
+          10: '10',
+          25: '25',
+          50: '50',
+          100: '100'
+        }
       }
     }
   }

@@ -10,7 +10,7 @@
           <span class="user-box__icon-num">2</span>
         </div>
         <Pagination
-            :pages="6"
+            :pages="10"
             :activePage="1"
         />
         <GoToPage/>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Pagination from "@/Pagination";
+import Pagination from "@/components/Pagination";
 import GoToPage from "@/components/home/GoToPage";
 import CountVacancies from "@/components/home/CountVacancies";
 import ViewResult from "@/components/home/ViewResult";
@@ -75,6 +75,7 @@ export default {
     display: none;
     @media (max-width: $xl) {
       display: block;
+      padding: 12px 10px;
     }
     @media (max-width: $md) {
       width: 100%;
@@ -92,6 +93,7 @@ export default {
     border-bottom: 1px solid #bfbfbf;
     @media (max-width: $xl) {
       margin: 0 auto;
+      padding-right: 4px;
       font-size: 13px;
     }
     @media (max-width: $md) {
@@ -100,6 +102,12 @@ export default {
     .user-box__icon-num {
       top: -9px;
       left: calc(100% + 4px);
+      @media (max-width: $xl) {
+        left: calc(100% - 8px);
+        font-size: 10px;
+        height: 14px;
+        padding: 0 4px;
+      }
     }
   }
 </style>

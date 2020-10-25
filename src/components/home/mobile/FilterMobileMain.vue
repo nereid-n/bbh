@@ -4,19 +4,29 @@
         v-for="(item, key, index) in mainFilter.options"
         class="filter__mobile-item"
         :class="{'active': key == active}"
+        @click="onMainSelect({name: 'type', value: key})"
     >
-      {{item}}
+      <template v-if="typeof item === 'string'">
+        {{item}}
+      </template>
+      <router-link :to="item.link" v-else>
+        {{item.value}}
+      </router-link>
     </div>
     <div @click="moreOpen = !moreOpen" class="filter__mobile-item">
       Еще
       <div v-if="moreOpen" class="filter__mobile-more">
         <router-link
-            v-for="(item, index) in mainFilter.options"
-            v-if="index > 2"
-            :to="item.link"
+            :to="mainFilter.options.phone.link"
             class="filter__mobile-more-item"
         >
-          {{item.text}}
+          {{mainFilter.options.phone.value}}
+        </router-link>
+        <router-link
+            :to="mainFilter.options.postcode.link"
+            class="filter__mobile-more-item"
+        >
+          {{mainFilter.options.postcode.value}}
         </router-link>
       </div>
     </div>

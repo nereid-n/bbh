@@ -3,8 +3,9 @@
     <div class="company">
       <h2 class="h2">Работа в компаниях:</h2>
       <div class="company__list">
-        <div
+        <router-link
             v-for="company in companies"
+            to="/"
             class="company__item"
         >
           <span class="company__num">{{company.num}}</span>
@@ -14,7 +15,7 @@
             </div>
             <div class="company__name">{{company.title}}</div>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>

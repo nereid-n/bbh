@@ -1,18 +1,38 @@
 <template>
-  <div class="pagination">
-    <router-link :class="`pagination__item ${activePage === 1 ? 'disable' : ''}`" to="/">
-      <i class="icon-angle-left"></i>
-    </router-link>
-    <router-link
-        v-for="n in pages"
-        to="/"
-        :class="`pagination__item ${activePage === n ? 'active' : ''}`"
-    >
-      {{n}}
-    </router-link>
-    <router-link :class="`pagination__item ${activePage === pages ? 'disable' : ''}`" to="/">
-      <i class="icon-angle-right"></i>
-    </router-link>
+  <div class="pagination-wrap">
+    <div class="pagination">
+      <router-link :class="`pagination__item ${activePage === 1 ? 'disable' : ''}`" to="/">
+        <i class="icon-angle-left"></i>
+      </router-link>
+      <template v-if="pages < 6">
+        <router-link
+            v-for="n in pages"
+            to="/"
+            :class="`pagination__item ${activePage === n ? 'active' : ''}`"
+        >
+          {{n}}
+        </router-link>
+      </template>
+      <template v-else>
+        <router-link
+            v-for="n in 4"
+            to="/"
+            :class="`pagination__item ${activePage === n ? 'active' : ''}`"
+        >
+          {{n}}
+        </router-link>
+        <router-link to="/" class="pagination__item disable">...</router-link>
+        <router-link
+            to="/"
+            :class="`pagination__item ${activePage === pages ? 'active' : ''}`"
+        >
+          {{pages}}
+        </router-link>
+      </template>
+      <router-link :class="`pagination__item ${activePage === pages ? 'disable' : ''}`" to="/">
+        <i class="icon-angle-right"></i>
+      </router-link>
+    </div>
     <router-link to="/" class="pagination__btn btn btn-primary">
       <span class="pagination__btn-text">Страница</span>
       <span class="pagination__btn-current">{{activePage}}</span>
@@ -40,8 +60,10 @@ export default {
 <style lang="scss">
   .pagination {
     display: flex;
-    @media (max-width: $md) {
-      width: 100%;
+    &-wrap {
+      @media (max-width: $md) {
+        width: 100%;
+      }
     }
     &__item {
       display: flex;
@@ -61,6 +83,10 @@ export default {
       }
       @media (max-width: $md) {
         display: none;
+      }
+      &:hover {
+        color: $primary;
+        border-color: $primary;
       }
       &:last-child {
         margin-right: 0;

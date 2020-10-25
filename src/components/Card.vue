@@ -1,244 +1,262 @@
 <template>
-  <div class="card" :class="cardClass">
-    <div v-if="data.urgently" class="footnote footnote__urgently">
-      <i class="icon-fire"></i>
-      <span class="footnote__text">Срочно</span>
-      <i class="icon-fire"></i>
-    </div>
-    <div v-else-if="data.prestige" class="footnote footnote__prestige">
-      <i class="icon-star"></i>
-      <span class="footnote__text">Престиж</span>
-      <i class="icon-star"></i>
-    </div>
-    <div class="card__row">
-      <div class="card__left">
-        <div class="card__type">
-          {{type[data.type]}}
-        </div>
-        <div :class="`card__img ${data.type === 'vacancy' ? '' : 'card__avatar'}`">
-          <img :src="img" alt="">
-          <Icon v-if="data.urgently" :icon="'icon-star-alt'"/>
-        </div>
-        <div class="card__left-icon">
-          <Icon v-if="data.openToOffers" :icon="'icon-tie'"/>
-          <Icon v-if="data.activeSearch" :icon="'icon-dollar'"/>
-          <i v-if="data.best" class="icon-best"></i>
-        </div>
+  <div class="card-wrap">
+    <div class="card" :class="cardClass">
+      <div v-if="data.urgently" class="footnote footnote__urgently">
+        <i class="icon-fire"></i>
+        <span class="footnote__text">Срочно</span>
+        <i class="icon-fire"></i>
       </div>
-      <div class="card__right">
-        <div class="card__top" v-if="data.withoutExperience || data.anyProfession">
-          <div class="card__top-text">
-            {{topText}}
+      <div v-else-if="data.prestige" class="footnote footnote__prestige">
+        <i class="icon-star"></i>
+        <span class="footnote__text">Престиж</span>
+        <i class="icon-star"></i>
+      </div>
+      <div class="card__row">
+        <div class="card__left">
+          <div class="card__type">
+            {{type[data.type]}}
           </div>
-          <i class="icon-question-circle-alt"></i>
-          <i v-if="data.moderated" class="icon-video"></i>
+          <div :class="`card__img ${data.type === 'vacancy' ? '' : 'card__avatar'}`">
+            <img :src="img" alt="">
+            <Icon v-if="data.urgently" :icon="'icon-star-alt'"/>
+          </div>
+          <div class="card__left-icon">
+            <Icon v-if="data.openToOffers" :icon="'icon-tie'"/>
+            <Icon v-if="data.activeSearch" :icon="'icon-dollar'"/>
+            <i v-if="data.best" class="icon-best"></i>
+          </div>
         </div>
-        <div class="card__main">
-          <div class="card__header">
-            <div class="card__header-left">
-              <div class="card__title">{{data.title}}</div>
-              <div class="card__name">{{data.name}}</div>
+        <div class="card__right">
+          <div class="card__top" v-if="data.withoutExperience || data.anyProfession">
+            <div class="card__top-text">
+              {{topText}}
             </div>
-            <div class="card__header-right">
-              <div class="card__icons-wrap">
-                <div v-if="data.best" class="achievement achievement-best-employer">
-                  <div class="achievement__icon"><i class="icon-circle-r"></i><span>!</span></div>
-                  <span class="achievement__text">Лучший работодатель</span>
+            <i class="icon-question-circle-alt"></i>
+            <i v-if="data.moderated" class="icon-video"></i>
+          </div>
+          <div class="card__main">
+            <div class="card__header">
+              <div class="card__header-left">
+                <router-link to="/" class="card__title">{{data.title}}</router-link>
+                <div class="card__name">{{data.name}}</div>
+              </div>
+              <div class="card__header-right">
+                <div class="card__icons-wrap">
+                  <div v-if="data.best" class="achievement achievement-best-employer">
+                    <div class="achievement__icon"><i class="icon-circle-r"></i><span>!</span></div>
+                    <span class="achievement__text">Лучший работодатель</span>
+                  </div>
+                  <div v-else-if="data.recommended" class="achievement achievement-recommend">
+                    <div class="achievement__icon"><i class="icon"></i></div>
+                    <span class="achievement__text">Мы рекомендуем!</span>
+                  </div>
+                  <CardIcons
+                      :favorite="data.favorite"
+                  />
                 </div>
-                <div v-else-if="data.recommended" class="achievement achievement-recommend">
-                  <div class="achievement__icon"><i class="icon"></i></div>
-                  <span class="achievement__text">Мы рекомендуем!</span>
-                </div>
-                <CardIcons
-                    :favorite="data.favorite"
-                />
+              </div>
+            </div>
+            <div class="card__place-salary">
+              <div class="card__place">
+                <i class="icon-map-marker-alt"></i>
+                <div><span class="card__place-item">{{data.city}}</span>, <span class="card__place-item">{{data.area}}</span></div>
+              </div>
+              <div class="card__salary">
+                <i class="icon-ruble-circle"></i>
+                <span>{{data.salary}}</span>
+              </div>
+            </div>
+            <div class="card__phones">
+              <i class="icon-phone-alt"></i>
+              <div>
+                <template v-for="(phone, index) in data.phones">
+                  <a
+                      :href="phoneHref(phone)"
+                  >
+                    {{phone}}
+                  </a><template v-if="data.contactPerson !== '' || index !== data.phones.length - 1">,</template>
+                </template>
+                <span v-if="data.contactPerson !== ''">
+              Контактное лицо: {{data.contactPerson}}
+            </span>
+              </div>
+              <button @click="openModalPhone = true" class="card__phones-btn">
+                <i class="icon-mobile"></i>
+                <span>Мобильный телефон</span>
+              </button>
+            </div>
+            <div class="card__tags" v-if="data.tags.length > 0">
+              <div
+                  v-for="(tag, index) in data.tags"
+                  v-if="index < 6 || tagsMore"
+                  class="card__tag"
+              >
+                {{tag}}
+              </div>
+              <div
+                  v-if="data.tags.length > 6 && !tagsMore"
+                  class="card__tags-more"
+                  @click="tagsMore = true"
+              >
+                Ещё {{data.tags.length - 6}}
               </div>
             </div>
           </div>
-          <div class="card__place-salary">
-            <div class="card__place">
-              <i class="icon-map-marker-alt"></i>
-              <div><span>{{data.city}}</span>, <span>{{data.area}}</span></div>
-            </div>
-            <div class="card__salary">
-              <i class="icon-ruble-circle"></i>
-              <span>{{data.salary}}</span>
-            </div>
-          </div>
-          <div class="card__phones">
-            <i class="icon-phone-alt"></i>
-            <div>
-              <template v-for="(phone, index) in data.phones">
-                <a
-                    :href="phoneHref(phone)"
-                >
-                  {{phone}}
-                </a><template v-if="data.contactPerson !== '' || index !== data.phones.length - 1">,</template>
-              </template>
-              <span v-if="data.contactPerson !== ''">
-              Контактное лицо: {{data.contactPerson}}
-            </span>
-            </div>
-            <button class="card__phones-btn">
-              <i class="icon-mobile"></i>
-              <span>Мобильный телефон</span>
-            </button>
-          </div>
-          <div class="card__tags" v-if="data.tags.length > 0">
-            <div
-                v-for="(tag, index) in data.tags"
-                v-if="index < 7"
-                class="card__tag"
-            >
-              {{tag}}
-            </div>
-            <div
-                v-if="data.tags.length > 6"
-                class="card__tags-more"
-            >
-              Ещё {{data.tags.length - 6}}
-            </div>
-          </div>
-        </div>
-        <div class="card__bottom">
-          <div @click="vacanciesOpen = !vacanciesOpen" class="card__vacancies-btn">
-            <template v-if="data.vacancies !== undefined">
-              <span>{{vacancies}}</span>
-              <i class="icon-angle-down"></i>
-            </template>
-          </div>
-          <div v-if="data.preferences !== undefined" class="card__preferences">
-            <Icon
-                v-for="(icon, key, index) in preferences"
-                :class="preferenceActive(key)"
-                :icon="icon"
-            />
-          </div>
-          <div class="card__date">
-            {{data.date}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card__detail" v-if="data.details !== undefined">
-      <div class="card__row">
-        <div class="card__left">Обязанности:</div>
-        <div class="card__right">
-          <div class="card__list">
-            <div class="card__list-item" v-for="(item, index) in data.details.duties">
-              {{item}}<template v-if="index !== data.details.duties.length - 1">;</template>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card__row">
-        <div class="card__left">Требования:</div>
-        <div class="card__right">
-          <div class="card__list">
-            <div class="card__list-item" v-for="(item, index) in data.details.demands">
-              {{item.title}}
-              <template v-if="item.values !== undefined">
-                <span> - </span>
-                <span class="card__list-link" v-for="(value, index) in item.values">
-                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
-                </span>
-              </template><template v-if="index !== data.details.demands.length - 1">;</template>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card__row">
-        <div class="card__left">Условия:</div>
-        <div class="card__right">
-          <div class="card__list">
-            <div class="card__list-item" v-for="(item, index) in data.details.terms">
-              {{item.title}}
-              <template v-if="item.values !== undefined">
-                <span> - </span>
-                <span class="card__list-link" v-for="(value, index) in item.values">
-                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
-                </span>
-              </template><template v-if="index !== data.details.terms.length - 1">;</template>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card__row">
-        <div class="card__left">Зарплата:</div>
-        <div class="card__right">
-          <div class="card__list">
-            <div class="card__list-item" v-for="item in data.details.salaryDetail">
-              {{item.title}}
-              <template v-if="item.values !== undefined">
-                <span> - </span>
-                <span class="card__list-link" v-for="(value, index) in item.values">
-                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
-                </span>
+          <div class="card__bottom">
+            <div @click="vacanciesOpen = !vacanciesOpen" class="card__vacancies-btn">
+              <template v-if="data.vacancies !== undefined">
+                <span>{{vacancies}}</span>
+                <i class="icon-angle-down"></i>
               </template>
             </div>
+            <div v-if="data.preferences !== undefined" class="card__preferences">
+              <Icon
+                  v-for="(icon, key, index) in preferences"
+                  :class="preferenceActive(key)"
+                  :icon="icon"
+              />
+            </div>
+            <div class="card__date">
+              {{data.date}}
+            </div>
           </div>
         </div>
       </div>
-      <div class="card__row">
-        <div class="card__left">Дополнительно:</div>
+      <div class="card__detail" v-if="data.details !== undefined">
+        <div class="card__row">
+          <div class="card__left">Обязанности:</div>
+          <div class="card__right">
+            <div class="card__list">
+              <div class="card__list-item" v-for="(item, index) in data.details.duties">
+                {{item}}<template v-if="index !== data.details.duties.length - 1">;</template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card__row">
+          <div class="card__left">Требования:</div>
+          <div class="card__right">
+            <div class="card__list">
+              <div class="card__list-item" v-for="(item, index) in data.details.demands">
+                {{item.title}}
+                <template v-if="item.values !== undefined">
+                  <span> - </span>
+                  <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+                </template><template v-if="index !== data.details.demands.length - 1">;</template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card__row">
+          <div class="card__left">Условия:</div>
+          <div class="card__right">
+            <div class="card__list">
+              <div class="card__list-item" v-for="(item, index) in data.details.terms">
+                {{item.title}}
+                <template v-if="item.values !== undefined">
+                  <span> - </span>
+                  <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+                </template><template v-if="index !== data.details.terms.length - 1">;</template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card__row">
+          <div class="card__left">Зарплата:</div>
+          <div class="card__right">
+            <div class="card__list">
+              <div class="card__list-item" v-for="item in data.details.salaryDetail">
+                {{item.title}}
+                <template v-if="item.values !== undefined">
+                  <span> - </span>
+                  <span class="card__list-link" v-for="(value, index) in item.values">
+                  {{value}}<template v-if="index !== item.values.length - 1">,</template>
+                </span>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card__row">
+          <div class="card__left">Дополнительно:</div>
+          <div class="card__right">
+            <div class="card__list">
+              <div class="card__list-item">
+                {{data.details.additionally}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__row card__row-vacancies" v-if="data.vacancies !== undefined">
+        <div class="card__left"></div>
         <div class="card__right">
-          <div class="card__list">
-            <div class="card__list-item">
-              {{data.details.additionally}}
+          <div class="card__vacancies">
+            <div
+                v-for="vacancy in data.vacancies"
+                class="card__vacancy"
+            >
+              <div class="card__vacancy-line"></div>
+              <div class="card__vacancy-content">
+                <router-link :to="vacancy.link" class="card__vacancy-title">
+                  {{vacancy.title}}
+                </router-link>
+                <i class="icon-ruble-circle"></i>
+                <div class="card__vacancy-salary">{{vacancy.salary}}</div>
+                <CardIcons :favorite="vacancy.favorite"/>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card__row card__row-vacancies" v-if="data.vacancies !== undefined">
-      <div class="card__left"></div>
-      <div class="card__right">
-        <div class="card__vacancies">
-          <div
-              v-for="vacancy in data.vacancies"
-              class="card__vacancy"
-          >
-            <div class="card__vacancy-line"></div>
-            <div class="card__vacancy-content">
-              <router-link :to="vacancy.link" class="card__vacancy-title">
-                {{vacancy.title}}
-              </router-link>
-              <i class="icon-ruble-circle"></i>
-              <div class="card__vacancy-salary">{{vacancy.salary}}</div>
-              <CardIcons :favorite="vacancy.favorite"/>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="data.moderated" class="card__status">
+      <div v-if="data.moderated" class="card__status">
       <span class="card__status-online" v-if="data.status === 'online'">
         online
       </span>
-      <span v-else>
+        <span v-else>
         Был в сети<br>{{data.status}} назад
       </span>
+      </div>
+      <div class="card__mobile-detail">
+        <div class="card__mobile-detail-item">
+          Прошло времени с момента публикации: <span>{{data.time}}</span>
+        </div>
+        <div class="card__mobile-detail-item">
+          Район работы: <span class="card__mobile-detail-link">{{data.city}}</span> / <span class="card__mobile-detail-link">{{data.area}}</span>
+        </div>
+        <div class="card__mobile-detail-item">
+          Рубрика: <span class="card__mobile-detail-link">{{data.rubric[0]}}</span>, <span class="card__mobile-detail-link">{{data.rubric[1]}}</span>
+        </div>
+      </div>
     </div>
-    <div class="card__mobile-detail">
-      <div class="card__mobile-detail-item">
-        Прошло времени с момента публикации: <span>{{data.time}}</span>
+    <Modal
+        @closeModal="openModalPhone = false"
+        v-if="openModalPhone"
+    >
+      <div class="modal__phones">
+        <template v-for="(phone, index) in data.phones">
+          <a
+              :href="phoneHref(phone)"
+          >
+            {{phone}}
+          </a><template v-if="index !== data.phones.length - 1">,</template>
+        </template>
       </div>
-      <div class="card__mobile-detail-item">
-        Район работы: <span class="card__mobile-detail-link">{{data.city}}</span> / <span class="card__mobile-detail-link">{{data.area}}</span>
-      </div>
-      <div class="card__mobile-detail-item">
-        Рубрика: <span class="card__mobile-detail-link">{{data.rubric[0]}}</span>, <span class="card__mobile-detail-link">{{data.rubric[1]}}</span>
-      </div>
-    </div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import Icon from "@/components/Icon";
 import CardIcons from "@/components/CardIcons";
+import Modal from "@/components/Modal";
 export default {
   name: "Card",
-  components: {CardIcons, Icon},
+  components: {Modal, CardIcons, Icon},
   props: {
     data: {
       type: Object,
@@ -260,7 +278,9 @@ export default {
         detail: 'icon-ruble-circle',
         weekend: 'icon-dollar-circle'
       },
-      vacanciesOpen: false
+      vacanciesOpen: false,
+      openModalPhone: false,
+      tagsMore: false
     }
   },
   computed: {
@@ -474,8 +494,12 @@ export default {
       @media (max-width: $md) {
         display: none;
       }
-      span {
+      &-item {
         border-bottom: 1px dotted #3568b4;
+        cursor: pointer;
+        &:hover {
+          color: #488eed;
+        }
       }
     }
     &__salary {
@@ -516,6 +540,9 @@ export default {
       }
       a {
         color: inherit;
+        &:hover {
+          color: $main;
+        }
       }
       .icon-phone-alt,
       div {
@@ -550,6 +577,9 @@ export default {
       @media (max-width: $md) {
         font-size: 14px;
       }
+      &:hover {
+        color: $primary;
+      }
     }
     &__name {
       color: #504f4f;
@@ -568,6 +598,10 @@ export default {
         font-size: 14px;
         color: #3568b4;
         border-bottom: 1px dotted;
+        cursor: pointer;
+        &:hover {
+          color: #488eed;;
+        }
       }
     }
     &__tag {
@@ -578,6 +612,11 @@ export default {
       color: #706f6f;
       border-radius: 2px;
       background-color: #eff2f4;
+      cursor: pointer;
+      &:hover {
+        color: #fff;
+        background-color: $primary;
+      }
       &:last-child {
         margin-right: 0;
       }
@@ -629,6 +668,10 @@ export default {
       display: none;
       margin-top: 16px;
       margin-bottom: 10px;
+      padding-right: 80px;
+      @media (max-width: $exlarg) {
+        padding-right: 0;
+      }
       @media (max-width: $md) {
         margin-bottom: 20px;
         margin-top: 10px;
@@ -709,6 +752,9 @@ export default {
       }
       &-title {
         color: $links;
+        &:hover {
+          color: #488eed;
+        }
       }
       &-content {
         display: flex;
@@ -834,6 +880,10 @@ export default {
       &-link {
         color: #3568b4;
         border-bottom: 1px dotted;
+        cursor: pointer;
+        &:hover {
+          color: #488eed;
+        }
       }
     }
     &__status {
@@ -1093,6 +1143,15 @@ export default {
     &__text {
       margin: 0 5px;
       text-transform: uppercase;
+    }
+  }
+  .modal {
+    &__phones {
+      padding: 30px 30px;
+      background-color: #fff;
+      a {
+        color: $main;
+      }
     }
   }
 </style>

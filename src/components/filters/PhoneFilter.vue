@@ -38,7 +38,7 @@
 import mainFilterMixin from "@/assets/mixins/mainFilterMixin";
 import SelectFilter from "@/components/filters/SelectFilter";
 import SelectPhone from "@/components/form/SelectPhone";
-import FilterMobileMain from "@/components/home/FilterMobileMain";
+import FilterMobileMain from "@/components/home/mobile/FilterMobileMain";
 
 export default {
   name: "PhoneFilter",

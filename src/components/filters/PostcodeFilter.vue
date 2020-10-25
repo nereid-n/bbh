@@ -29,7 +29,7 @@
 import SelectFilter from "@/components/filters/SelectFilter";
 import Input from "@/components/form/Input";
 import mainFilterMixin from "@/assets/mixins/mainFilterMixin";
-import FilterMobileMain from "@/components/home/FilterMobileMain";
+import FilterMobileMain from "@/components/home/mobile/FilterMobileMain";
 export default {
   name: "PostcodeFilter",
   components: {FilterMobileMain, Input, SelectFilter},

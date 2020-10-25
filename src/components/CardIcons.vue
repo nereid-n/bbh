@@ -25,6 +25,10 @@ name: "CardIcons",
     font-size: 16px;
     i {
       margin-left: 13px;
+      cursor: pointer;
+      &:hover {
+        color: $primary;
+      }
       @media (max-width: $md) {
         margin-left: 8px;
       }

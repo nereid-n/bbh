@@ -130,7 +130,7 @@ export default {
         },
         {
           text: 'Волонтерство',
-          id: 'type5'
+          id: 'type8'
         }
       ],
       salary: {
@@ -320,6 +320,7 @@ export default {
     }
     &__num {
       margin-left: auto;
+      padding-left: 15px;
       color: $placeholder;
       font-size: 14px;
     }
@@ -338,6 +339,9 @@ export default {
       label {
         padding-left: 36px;
         font-size: 16px;
+        @media (max-width: $exlarg) {
+          font-size: 14px;
+        }
       }
       &:last-child {
         margin-bottom: -12px;

@@ -5,6 +5,7 @@
     </div>
     <Input
         :data="data"
+        :default-value="value"
         class="viewForm__input"
     />
     <button class="viewForm__button btn-outline-gray">ok</button>
@@ -18,9 +19,9 @@ name: "GoToPage",
   components: {Input},
   data() {
     return {
+      value: 1,
       data: {
         placeholder: '',
-        defaultValue: '1'
       }
     }
   }
@@ -53,6 +54,11 @@ name: "GoToPage",
       margin-left: 10px;
       padding: 3px 2px;
       text-transform: uppercase;
+      &:hover {
+        color: #fff;
+        background-color: #72797e;
+        border-color: #72797e;
+      }
     }
     &__input {
       &.select-fill {
@@ -68,6 +74,7 @@ name: "GoToPage",
         padding: 5px 9px;
         input {
           padding: 5px 9px;
+          color: $placeholder;
         }
         .select__text {
           color: $placeholder;

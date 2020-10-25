@@ -6,13 +6,22 @@
             v-for="list in links"
             class="footer__nav"
         >
-          <router-link
-              v-for="link in list"
-              class="footer__nav-link"
-              :to="link.link"
-          >
-            {{link.name}}
-          </router-link>
+          <template v-for="link in list">
+            <router-link
+                v-if="link.link !== 'modal'"
+                class="footer__nav-link"
+                :to="link.link"
+            >
+              {{link.name}}
+            </router-link>
+            <span
+                v-else
+                class="footer__nav-link"
+                @click="modalOpen = true"
+            >
+              {{link.name}}
+            </span>
+          </template>
         </nav>
         <div class="footer__right">
           <div class="footer__social-wrap">
@@ -54,14 +63,24 @@
         </ul>
       </div>
     </div>
+    <button @click="modalOpen = true" class="btn btn-primary btn-moder">
+      Написать модератору
+    </button>
+    <Modal
+        @closeModal="modalOpen = false"
+        v-if="modalOpen">
+      <ModalModer/>
+    </Modal>
   </footer>
 </template>
 
 <script>
 
+  import ModalModer from "@/components/home/modals/ModalModer";
+  import Modal from "@/components/Modal";
   export default {
     name: 'Footer',
-    components: {},
+    components: {Modal, ModalModer},
     data() {
       return {
         links: [
@@ -104,7 +123,7 @@
             },
             {
               name: 'Написать модератору',
-              link: '/'
+              link: 'modal'
             }
           ]
         ],
@@ -180,7 +199,8 @@
             icon: 'icon-envelope-m1',
             num: '23'
           }
-        ]
+        ],
+        modalOpen: false
       }
     }
   }
@@ -252,12 +272,16 @@
         color: inherit;
         font-size: 13px;
         border-bottom: 1px solid #bfbfbf;
+        cursor: pointer;
         @media (max-width: $xl) {
           margin-right: 20px;
         }
         @media (max-width: $md) {
           font-size: 11px;
           margin-bottom: 10px;
+        }
+        &:hover {
+          color: $links;
         }
       }
     }
@@ -324,6 +348,9 @@
       color: inherit;
       font-size: 12px;
       border-bottom: 1px solid #bfbfbf;
+      &:hover {
+        color: $primary;
+      }
     }
     &__mobile {
       display: none;
@@ -400,6 +427,22 @@
           }
         }
       }
+    }
+  }
+  .btn-moder.btn {
+    position: fixed;
+    top: 150px;
+    right: 0;
+    transform-origin: bottom right;
+    transform: rotate(-90deg) translateX(50%);
+    width: 180px;
+    height: 41px;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 300;
+    text-transform: none;
+    @media (max-width: $lg) {
+      display: none;
     }
   }
 </style>

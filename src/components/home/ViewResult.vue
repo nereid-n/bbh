@@ -5,6 +5,7 @@
     </div>
     <Select
         class="viewForm__input"
+        :default-value="value"
         :data="view"
     />
   </div>
@@ -17,14 +18,12 @@ export default {
   components: {Select},
   data() {
     return {
+      value: 0,
       view: {
-        defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: '<div class="viewRows"><span></span><span></span><span></span></div>'
-          }
-        ]
+        name: 'view',
+        options: {
+          0: '<div class="viewRows"><span></span><span></span><span></span></div>'
+        }
       }
     }
   }

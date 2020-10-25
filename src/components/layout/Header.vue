@@ -46,9 +46,9 @@
         </div>
         <div class="header__right">
           <div class="header__auth">
-            <button class="header__auth-link">Войдите</button>
+            <button @click="auth = true" class="header__auth-link">Войдите</button>
             или
-            <button class="header__auth-link">зарегистрируйтесь</button>
+            <router-link to="/" class="header__auth-link">зарегистрируйтесь</router-link>
           </div>
           <div class="header__contacts">
             <router-link to="/" class="header__contacts-link">
@@ -75,9 +75,9 @@
             </router-link>
           </div>
           <div class="header__auth">
-            <button class="header__auth-link">Войдите</button>
+            <button @click="mobileAuth = true" class="header__auth-link">Войдите</button>
           </div>
-          <div class="header__mobile-btn"><span></span><span></span><span></span></div>
+          <div @click="auth = true" class="header__mobile-btn"><span></span><span></span><span></span></div>
         </div>
         <div class="header__mobile-logo">
           <router-link to="/" class="logo">
@@ -86,14 +86,25 @@
         </div>
       </div>
     </div>
+    <MobileAuth
+        :class="{'active': mobileAuth}"
+        @close="mobileAuth = false"
+        @openAuth="auth = true"
+    />
+    <Auth
+        :class="{'active': auth}"
+        @close="auth = false"
+    />
   </header>
 </template>
 
 <script>
 
+  import MobileAuth from "@/components/layout/MobileAuth";
+  import Auth from "@/components/layout/Auth";
   export default {
     name: 'Header',
-    components: {},
+    components: {Auth, MobileAuth},
     data() {
       return {
         nav: [
@@ -135,7 +146,9 @@
             link: '/',
             num: '0'
           }
-        ]
+        ],
+        mobileAuth: false,
+        auth: false
       }
     },
   }
@@ -160,7 +173,7 @@
       font-weight: 300;
       border-bottom: 1px solid #bfbfbf;
       &:hover {
-        border-bottom: none;
+        color: $links;
       }
       &-wrap {
         min-width: 165px;
@@ -251,6 +264,9 @@
         color: $links;
         background-color: transparent;
         border: none;
+        &:hover {
+          color: #4d8bf0;
+        }
       }
     }
     &__mobile {
@@ -306,6 +322,9 @@
     &__icon {
       color: #c0c0c0;
       font-size: 17px;
+      &:hover {
+        color: #262626
+      }
       &-wrap {
         position: relative;
       }
