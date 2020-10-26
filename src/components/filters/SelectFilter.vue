@@ -3,7 +3,7 @@
       :data="mainFilter"
       :defaultValue="defaultValue"
       @onInput="onMainSelect"
-      class="filter__form-input"
+      class="filter__form-input select-type"
   />
 </template>
 
@@ -20,6 +20,8 @@ name: "SelectFilter",
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .select-type {
+    min-width: 170px;
+  }
 </style>

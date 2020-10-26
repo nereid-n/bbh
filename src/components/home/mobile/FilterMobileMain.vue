@@ -41,7 +41,17 @@ export default {
   props: {
     active: {}
   },
-  mixins: [mainFilterMixin]
+  mixins: [mainFilterMixin],
+  methods: {
+    closeDropdown(e) {
+      if (e.target.closest('.filter__mobile-main') === null) {
+        this.moreOpen = false;
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('click', (e) => this.closeDropdown(e));
+  },
 }
 </script>
 

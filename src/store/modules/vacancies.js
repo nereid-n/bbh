@@ -1409,7 +1409,7 @@ export default {
   },
   actions: {
     'GET_VACANCIES_CV': async () => {
-      return vacancies
+      return vacancies_cv
         .then(
           res => {
             return res;
@@ -1433,7 +1433,7 @@ export default {
         .catch(err => console.error(`catch, ${err}`));
     },
     'GET_VACANCIES': async () => {
-      return vacancies_cv
+      return vacancies
         .then(
           res => {
             return res;

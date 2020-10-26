@@ -365,6 +365,7 @@
         font-size: 10px;
       }
       &-link {
+        color: inherit;
         border-bottom: 1px solid;
       }
       &-btn.btn {

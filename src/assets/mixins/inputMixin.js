@@ -16,7 +16,8 @@ export default {
     wrapClass() {
       return {
         'input-active': this.focus,
-        'input-filled': this.value !== ''
+        'input-filled': this.value !== '',
+        'select-checkbox': this.data.checkboxes !== undefined
       };
     }
   },

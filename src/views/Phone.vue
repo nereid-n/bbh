@@ -38,6 +38,7 @@ name: "Phone",
   },
   created() {
     this.getPhones();
+    document.title = 'Телефон';
   }
 }
 </script>

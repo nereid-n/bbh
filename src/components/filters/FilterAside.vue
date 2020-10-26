@@ -2,7 +2,7 @@
   <div class="filter-aside">
     <div class="filter-aside__block">
       <h2 class="h2">Рубрика:</h2>
-      <Select :data="rubric"/>
+      <Select class="filter-aside__select" :data="rubric"/>
     </div>
     <div class="filter-aside__block">
       <div class="filter-aside__reset">
@@ -91,13 +91,29 @@ export default {
   data() {
     return {
       rubric: {
-        defaultValue: 0,
-        options: [
-          {
-            key: 0,
-            value: 'Все рубрики'
-          }
-        ]
+        placeholder: 'Все рубрики',
+        options: {
+          0: 'HR специалисты - Бизнес-тренеры',
+          1: 'IT',
+          2: 'Автобизнес - Сервисное обслуживание',
+          3: 'Административный персонал',
+          4: 'Банки - Инвестиции - Лизинг',
+          5: 'Благоустройство',
+          6: 'Бухгалтерия - Налоги - Финансы предприятия',
+          7: 'Гостиницы - Рестораны - Кафе',
+          8: 'Государственные учреждения - Местное самоуправление - некоммерческие',
+          9: 'Дизайн - Графика - Фото',
+          10: 'Недвижимость',
+          11: 'Некоммерческие - Общественные организации',
+          12: 'Охрана - Безопасность - Силовые структуры',
+          13: 'Переводчик',
+          14: 'Продавец - Менеджер по работе с клиентами',
+          15: 'Производство - Инженеры - Технологи',
+          16: 'Рабочие специальности - Курьеры - Персонал для дома',
+          17: 'Сельское хозяйство - Агробизнес - Лесное хозяйство',
+          18: 'Спорт - Красота - Оздоровление',
+          19: 'Страхование',
+        }
       },
       type: [
         {
@@ -393,6 +409,22 @@ export default {
         width: 100%;
         margin-top: 15px;
         padding: 12px 15px;
+      }
+    }
+    &__select {
+      .select__dropdown {
+        width: 450px;
+        padding: 15px 0;
+      }
+      .select__dropdown-item {
+        white-space: unset;
+        &:hover {
+          color: $primary;
+          background-color: #fff;
+        }
+      }
+      .select__dropdown-item-content {
+        padding: 3px 30px;
       }
     }
   }

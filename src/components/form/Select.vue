@@ -1,12 +1,21 @@
 <template>
   <div class="select-wrap" :class="wrapClass">
     <div class="input" @click="focus = !focus">
-      <div v-if="defaultValue === undefined" class="input__placeholder">
+      <div v-if="value.length === 0" class="input__placeholder">
         {{data.placeholder}}
       </div>
       <div v-else class="select__text">
+        <span v-if="data.country !== undefined">{{country}}</span>
+        <span v-else-if="data.checkboxes !== undefined">
+          <template v-if="value.length > 1">
+            {{data.placeholder}}<br>(Выбрано {{value.length}})
+          </template>
+          <template v-else>
+            {{value[0]}}
+          </template>
+        </span>
         <span
-            v-if="typeof data.options[value] === 'string'"
+            v-else-if="typeof data.options[value] === 'string'"
             v-html="data.options[value]"
         ></span>
         <template v-else>
@@ -16,45 +25,104 @@
       </div>
       <div class="select__arrow"></div>
     </div>
-    <div class="select__dropdown">
-      <div
-          v-for="(value, key, index) in data.options"
-          class="select__dropdown-item"
-          @click="clickItem(key)"
+    <template>
+      <div v-if="data.country === undefined"
+          class="select__dropdown"
+          :class="{'select__dropdown-long': Object.keys(data.options).length > 10}"
       >
-        <span
-            class="select__dropdown-item-content"
-            v-if="typeof value === 'string'"
-            v-html="value"
-        ></span>
-        <template v-else>
-          <router-link
-              class="select__dropdown-item-content"
-              v-if="value.link !== undefined"
-              :to="value.link"
-              v-html="value.value"
-          ></router-link>
-          <div v-else class="select__dropdown-item-content">
-            <img v-if="value.img !== undefined" :src="value.img" alt="">
-            <span v-html="value.value"></span>
+        <vuescroll>
+          <div
+              v-for="(value, key, index) in data.options"
+              class="select__dropdown-item"
+              v-if="data.checkboxes === undefined"
+              @click="clickItem(key)"
+          >
+            <span
+                class="select__dropdown-item-content"
+                v-if="typeof value === 'string'"
+                v-html="value"
+            ></span>
+            <template v-else>
+              <router-link
+                  class="select__dropdown-item-content"
+                  v-if="value.link !== undefined"
+                  :to="value.link"
+                  v-html="value.value"
+              ></router-link>
+              <div v-else class="select__dropdown-item-content">
+                <img v-if="value.img !== undefined" :src="value.img" alt="">
+                <span v-html="value.value"></span>
+              </div>
+            </template>
           </div>
-        </template>
+          <div
+              v-else
+              v-for="(value, key, index) in data.options"
+              class="select__dropdown-item-checkbox"
+          >
+            <Checkbox
+                @onInput="onCheckbox"
+                :data="{id: `${data.name}-${key}-checkbox`, text: value}"
+            />
+          </div>
+        </vuescroll>
       </div>
-    </div>
+      <CountrySelect
+          @clickItem="clickCountry"
+          v-else
+      />
+    </template>
   </div>
 </template>
 
 <script>
 import inputMixin from "@/assets/mixins/inputMixin";
+import vuescroll from 'vuescroll';
+import CountrySelect from "@/components/filters/CountrySelect";
+import Checkbox from "@/components/form/Checkbox";
 
 export default {
   name: "Select",
+  components: {Checkbox, CountrySelect, vuescroll},
+  data() {
+    return {
+      country: ''
+    }
+  },
   methods: {
     clickItem(key) {
       this.focus = false;
       this.value = key;
       this.onInput(key);
+    },
+    closeDropdown(e) {
+      if (e.target.closest('.select-wrap') === null) {
+        this.focus = false;
+      }
+    },
+    clickCountry(key, value) {
+      this.clickItem(key);
+      this.country = value;
+    },
+    onCheckbox(item) {
+      if (this.value === '') {
+        this.value = [];
+      }
+      if (item.value) {
+        this.value.push(item.text);
+      } else {
+        for (let i = 0; i < this.value.length; i++) {
+          if (this.value[i] === item.text) {
+            this.value.splice(i, 1);
+            break;
+          }
+        }
+      }
+      this.onInput(this.value);
     }
+  },
+  mounted() {
+    document.addEventListener('click', (e) => this.closeDropdown(e));
   },
   mixins: [inputMixin]
 }
@@ -108,6 +176,9 @@ export default {
       background-color: #fff;
       border: 1px solid #e8e8e8;
       border-radius: 2px;
+      &-long {
+        height: 400px;
+      }
       &-item {
         white-space: nowrap;
         cursor: pointer;
@@ -117,6 +188,9 @@ export default {
         }
         a {
           color: inherit;
+        }
+        &-checkbox {
+          padding: 4px 30px 4px 15px;
         }
         &-content {
           display: flex;
@@ -133,6 +207,17 @@ export default {
       align-items: center;
       img {
         margin-right: 15px;
+      }
+    }
+    &-checkbox {
+      .select__dropdown-item {
+        &:hover {
+          color: inherit;
+          background-color: #fff;
+        }
+      }
+      .select__dropdown {
+        padding: 5px 0;
       }
     }
   }
@@ -169,5 +254,8 @@ export default {
         }
       }
     }
+  }
+  .__bar-is-vertical {
+    background-color: $primary !important;
   }
 </style>

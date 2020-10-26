@@ -1,25 +1,37 @@
 <template>
   <div class="checkbox-wrap">
-    <input :id="data.id" type="checkbox">
+    <input @change="onInput" :id="data.id" type="checkbox">
     <label :for="data.id">
       <Icon v-if="data.icon !== undefined" :icon="data.icon"/>
       <span>{{data.text}}</span>
-      <i v-if="data.question !== undefined" class="question__icon icon-question-circle-alt"></i>
+      <i
+          v-if="data.question !== undefined"
+          class="question__icon icon-question-circle-alt"
+          v-tooltip.bottom="data.question"
+      ></i>
     </label>
   </div>
 </template>
 
 <script>
 import Icon from "@/components/Icon";
+import inputMixin from "@/assets/mixins/inputMixin";
 export default {
   name: "Checkbox",
   components: {Icon},
-  props: {
-    data: {
-      type: Object,
-      required: true
+  methods: {
+    onInput(value) {
+      value = value.target.checked;
+      let name;
+      if (this.data.name !== undefined) {
+        name = this.data.name;
+      } else {
+        name = this.data.id;
+      }
+      this.$emit('onInput', {value: value, name: name, text: this.data.text});
     }
   },
+  mixins: [inputMixin]
 }
 </script>
 
@@ -44,6 +56,7 @@ export default {
     label {
       display: flex;
       align-items: flex-start;
+      width: 100%;
       cursor: pointer;
       padding-left: 30px;
       color: $grayText;
@@ -80,8 +93,7 @@ export default {
     }
   }
   .question__icon {
-    margin-left: 12px;
-    margin-top: 2px;
+    margin-left: auto;
     margin-bottom: -2px;
     font-size: 18px;
     color: #a9a9a9;

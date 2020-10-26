@@ -58,6 +58,9 @@ name: "Postcode",
         area: 'Приокский'
       }
     }
+  },
+  created() {
+    document.title = 'Индекс';
   }
 }
 </script>

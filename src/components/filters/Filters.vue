@@ -8,31 +8,23 @@
           </router-link>
         </div>
         <div class="filter__main">
-          <div class="filter__top">
-            <div class="filter__top-text">
-              Поиск:
-            </div>
-            <div class="filter__top-link">
-              по городам
-            </div>
-            <div class="filter__top-link">
-              по рубрикам
-            </div>
-            <div class="filter__top-link">
-              по професиям
-            </div>
-            <router-link class="filter__top-link" to="/">
-              Расширенный поиск
-            </router-link>
-          </div>
+          <FilterTop/>
           <div class="filter__form">
             <SelectFilter
                 :default-value="defaultValues.mainFilter"
                 @onInput="onInput"
             />
             <Input class="filter__form-input" :data="keywords"/>
-            <Select class="filter__form-input" :data="region"/>
-            <Select class="filter__form-input" :data="area"/>
+            <Select
+                class="filter__form-input"
+                :data="region"
+                @onInput="onInputRegion"
+            />
+            <Select
+                class="filter__form-input"
+                :data="area"
+                @onInput="onInputArea"
+            />
             <Select class="filter__form-input" :data="metro"/>
             <button class="filter__btn">Найти</button>
           </div>
@@ -72,7 +64,10 @@
         </div>
       </div>
       <div class="filter__mobile">
-        <FilterMobileMain :active="defaultValues.mainFilter"/>
+        <FilterMobileMain
+            @onInput="onInput"
+            :active="defaultValues.mainFilter"
+        />
         <Checkbox :data="checkboxModer"/>
         <div class="filter__mobile-menu">
           <router-link
@@ -97,9 +92,10 @@ import Input from "@/components/form/Input";
 import Checkbox from "@/components/form/Checkbox";
 import SelectFilter from "@/components/filters/SelectFilter";
 import FilterMobileMain from "@/components/home/mobile/FilterMobileMain";
+import FilterTop from "@/components/filters/FilterTop";
 export default {
   name: "Filters",
-  components: {FilterMobileMain, SelectFilter, Checkbox, Input, Select},
+  components: {FilterTop, FilterMobileMain, SelectFilter, Checkbox, Input, Select},
   data() {
     return {
       defaultValues: {
@@ -109,13 +105,22 @@ export default {
         placeholder: 'Введите ключевые слова (например юрист)'
       },
       region: {
-        placeholder: 'Регион / Населенный пункт'
+        placeholder: 'Страна / Регион / Населенный пункт',
+        country: true,
+        options: {}
       },
       area: {
-        placeholder: 'Район'
+        name: 'area',
+        placeholder: 'Район',
+        checkboxes: true,
+        checkboxAll: true,
+        options: {}
       },
       metro: {
-        placeholder: 'Метро'
+        name: 'metro',
+        placeholder: 'Метро',
+        checkboxes: true,
+        options: {}
       },
       checkboxModer: {
         text: 'Отображать вакансии не прошедшие модерацию',
@@ -143,6 +148,19 @@ export default {
   methods: {
     onInput(value) {
       this.$emit('changeFilter', value);
+      this.defaultValues.mainFilter = value.value;
+    },
+    onInputRegion() {
+      this.$store.dispatch(`places/GET_AREA`)
+          .then(res => {
+            this.area.options = res;
+          });
+    },
+    onInputArea() {
+      this.$store.dispatch(`places/GET_METRO`)
+          .then(res => {
+            this.metro.options = res;
+          });
     }
   },
 }
@@ -166,31 +184,6 @@ export default {
       padding-left: 10px;
       @media (max-width: $xl) {
         padding-left: 0;
-      }
-    }
-    &__top {
-      display: flex;
-      font-size: 15px;
-      font-weight: 300;
-      @media (max-width: $xl) {
-        display: none;
-      }
-      &-text {
-        margin-right: 28px;
-        color: #3d3d3d;
-      }
-      &-link {
-        margin-right: 25px;
-        color: #5c6266;
-        border-bottom: 1px solid #bfbfbf;
-        &:hover {
-          color: $links;
-          cursor: pointer;
-        }
-        &:last-child {
-          margin-right: 0;
-          margin-left: auto;
-        }
       }
     }
     &__form {

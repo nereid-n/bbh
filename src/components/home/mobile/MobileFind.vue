@@ -10,8 +10,9 @@
             :data="input"
         />
         <Select
-            :data="select"
-            :default-value="0"
+            :data="mainFilter"
+            :default-value="'vacancies_cv'"
+            @onInput="onInput"
         />
         <button @click="btnClick" class="mobile-find__btn btn">Найти</button>
       </div>
@@ -35,22 +36,34 @@ export default {
       input: {
         placeholder: 'Название вакансии'
       },
-      select: {
+      mainFilter: {
+        name: 'type',
         options: {
-          0: 'Вакансии + Резюме',
-          1: 'Вакансии',
-          2: 'Резюме',
-          3: 'Телефон',
-          4: 'Индекс'
+          'vacancies_cv': 'Вакансии + Резюме',
+          'vacancies': 'Вакансии',
+          'cv': 'Резюме',
+          'phone': 'Телефон',
+          'postcode': 'Индекс'
         }
+      },
+      values: {
+        type: 'vacancies_cv'
       }
     }
   },
   methods: {
+    onInput(value) {
+      this.values[value.name] = value.value;
+    },
     btnClick() {
       let home = document.getElementsByClassName('home')[0];
       home.classList.remove('home-first');
       home.classList.add('home-second');
+      if (this.values.type === 'phone' || this.values.type === 'postcode') {
+        this.$router.push({name: this.values.type});
+      } else {
+        this.$emit('changeFilter', {value: this.values.type, name: 'type'});
+      }
     }
   }
 }
@@ -79,6 +92,9 @@ export default {
     }
     .input {
       height: 39px;
+    }
+    .select-wrap {
+      color: $main;
     }
     &__btn {
       display: block;

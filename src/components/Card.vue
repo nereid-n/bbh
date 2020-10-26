@@ -31,8 +31,8 @@
             <div class="card__top-text">
               {{topText}}
             </div>
-            <i class="icon-question-circle-alt"></i>
-            <i v-if="data.moderated" class="icon-video"></i>
+            <i v-tooltip.bottom="topTextTooltip" class="icon-question-circle-alt"></i>
+            <i v-tooltip.bottom="'Тут будет подсказка при наведении'" v-if="data.moderated" class="icon-video"></i>
           </div>
           <div class="card__main">
             <div class="card__header">
@@ -66,19 +66,28 @@
                 <span>{{data.salary}}</span>
               </div>
             </div>
-            <div class="card__phones">
+            <div ref="refPhones" class="card__phones">
               <i class="icon-phone-alt"></i>
-              <div>
+              <div ref="refPhonesMain" class="card__phones-main">
                 <template v-for="(phone, index) in data.phones">
-                  <a
-                      :href="phoneHref(phone)"
-                  >
-                    {{phone}}
-                  </a><template v-if="data.contactPerson !== '' || index !== data.phones.length - 1">,</template>
+                  <v-popover :popoverClass="'card__phones-tooltip'" trigger="hover">
+                    <a :href="phoneHref(phone)">{{phone}}</a>
+                    <template slot="popover">
+                      <div class="tooltip-content">
+                        <img :src="phoneTooltip.img" alt="">
+                        <span>{{phoneTooltip.text}}</span>
+                      </div>
+                    </template>
+                  </v-popover>
                 </template>
-                <span v-if="data.contactPerson !== ''">
-              Контактное лицо: {{data.contactPerson}}
-            </span>
+                <span v-if="data.contactPerson !== undefined">
+                  <span v-if="phonesOverflow" v-tooltip.bottom-end="{content: 'Контактное лицо: ' + data.contactPerson, classes:'card__contactPerson-tooltip'}">
+                    Контактное лицо: {{data.contactPerson}}
+                  </span>
+                  <span v-else>
+                    Контактное лицо: {{data.contactPerson}}
+                  </span>
+                </span>
               </div>
               <button @click="openModalPhone = true" class="card__phones-btn">
                 <i class="icon-mobile"></i>
@@ -112,7 +121,7 @@
             <div v-if="data.preferences !== undefined" class="card__preferences">
               <Icon
                   v-for="(icon, key, index) in preferences"
-                  :class="preferenceActive(key)"
+                  :className="preferenceActive(key)"
                   :icon="icon"
               />
             </div>
@@ -214,12 +223,12 @@
         </div>
       </div>
       <div v-if="data.moderated" class="card__status">
-      <span class="card__status-online" v-if="data.status === 'online'">
-        online
-      </span>
+        <span class="card__status-online" v-if="data.status === 'online'">
+          online
+        </span>
         <span v-else>
-        Был в сети<br>{{data.status}} назад
-      </span>
+          Был в сети<br>{{data.status}} назад
+        </span>
       </div>
       <div class="card__mobile-detail">
         <div class="card__mobile-detail-item">
@@ -280,7 +289,12 @@ export default {
       },
       vacanciesOpen: false,
       openModalPhone: false,
-      tagsMore: false
+      tagsMore: false,
+      phoneTooltip: {
+        img: '/img/phones/tele2.svg',
+        text: 'ООО "Т2 Мобайл" г. Елизово Елизовский район Камчатский край'
+      },
+      phonesOverflow: false
     }
   },
   computed: {
@@ -295,6 +309,15 @@ export default {
         return 'объявление не прошло модерацию';
       } else if (this.data.withoutExperience) {
         return 'Опыт работы не имеет значения';
+      } else if (this.data.anyProfession) {
+        return 'Готов(а) на любую профессию';
+      }
+    },
+    topTextTooltip() {
+      if (!this.data.moderated) {
+        return 'объявление не прошло модерацию';
+      } else if (this.data.withoutExperience) {
+        return 'Данный работодатель согласен принять на работу соискателя без опыта работы или из других профессий с условием дополнительного обучения на новую для него профессию или должность';
       } else if (this.data.anyProfession) {
         return 'Готов(а) на любую профессию';
       }
@@ -328,6 +351,13 @@ export default {
         if (value === preference) return '';
       }
       return 'disable';
+    }
+  },
+  mounted() {
+    let refPhones = this.$refs.refPhones;
+    let refPhonesMain = this.$refs.refPhonesMain
+    if (refPhones.offsetWidth < refPhonesMain.offsetWidth) {
+      this.phonesOverflow = true;
     }
   }
 }
@@ -462,6 +492,10 @@ export default {
       i {
         margin-left: 10px;
         font-size: 14px;
+        cursor: pointer;
+        &:hover {
+          color: $placeholder;
+        }
       }
     }
     &__header {
@@ -531,6 +565,31 @@ export default {
         margin-top: 5px;
         margin-bottom: 5px;
       }
+      &-main {
+        display: flex;
+        .v-popover {
+          &:last-child {
+            a {
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      &-tooltip {
+        padding: 15px 20px;
+        max-width: 380px;
+        text-align: left;
+        .tooltip-content {
+          display: flex;
+        }
+        img {
+          min-width: 60px;
+          width: 60px;
+          margin-right: 20px;
+        }
+      }
       i {
         margin-right: 5px;
         font-size: 20px;
@@ -539,7 +598,11 @@ export default {
         }
       }
       a {
+        margin-right: 5px;
         color: inherit;
+        &:after {
+          content: ','
+        }
         &:hover {
           color: $main;
         }
@@ -565,6 +628,11 @@ export default {
             font-size: 14px;
           }
         }
+      }
+    }
+    &__contactPerson {
+      &-tooltip {
+        margin-right: 90px;
       }
     }
     &__title {

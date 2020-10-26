@@ -1,7 +1,7 @@
 <template>
   <div class="home home-first">
     <MainTitle/>
-    <MobileFind/>
+    <MobileFind @changeFilter="getItems"/>
     <MobilePopular/>
     <Filters @changeFilter="getItems"/>
     <FilterView/>
@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     getItems(value) {
+      console.log(value);
       this.$store.dispatch(`vacancies/GET_${value.value.toUpperCase()}`)
           .then(res => {
             this.cards = res;
@@ -67,6 +68,7 @@ export default {
     }
   },
   created() {
+    document.title = 'Вакансии + Резюме';
     let type = this.$route.params.type === undefined ? 'vacancies_cv' : this.$route.params.type;
     this.getItems({value: type});
   },
