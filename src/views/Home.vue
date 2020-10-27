@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     getItems(value) {
-      console.log(value);
       this.$store.dispatch(`vacancies/GET_${value.value.toUpperCase()}`)
           .then(res => {
             this.cards = res;

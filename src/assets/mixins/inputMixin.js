@@ -16,8 +16,9 @@ export default {
     wrapClass() {
       return {
         'input-active': this.focus,
-        'input-filled': this.value !== '',
-        'select-checkbox': this.data.checkboxes !== undefined
+        'input-filled': this.value.length > 0,
+        'select-checkbox': this.data.checkboxes !== undefined,
+        'select__country': this.data.country !== undefined
       };
     }
   },

@@ -5,7 +5,7 @@
         {{data.placeholder}}
       </div>
       <div v-else class="select__text">
-        <span v-if="data.country !== undefined">{{country}}</span>
+        <span v-if="data.country !== undefined" v-html="country"></span>
         <span v-else-if="data.checkboxes !== undefined">
           <template v-if="value.length > 1">
             {{data.placeholder}}<br>(Выбрано {{value.length}})
@@ -68,6 +68,7 @@
         </vuescroll>
       </div>
       <CountrySelect
+          @close="focus = false"
           @clickItem="clickCountry"
           v-else
       />
@@ -78,7 +79,7 @@
 <script>
 import inputMixin from "@/assets/mixins/inputMixin";
 import vuescroll from 'vuescroll';
-import CountrySelect from "@/components/filters/CountrySelect";
+import CountrySelect from "@/components/form/CountrySelect";
 import Checkbox from "@/components/form/Checkbox";
 
 export default {
@@ -100,9 +101,17 @@ export default {
         this.focus = false;
       }
     },
-    clickCountry(key, value) {
-      this.clickItem(key);
-      this.country = value;
+    clickCountry(value) {
+      this.value = value;
+      this.onInput(value);
+      this.focus = false;
+      if (value.length === 1) {
+        this.country = value[0];
+      } else if (value.length === 0) {
+        this.country = '';
+      } else {
+        this.country = `Населённых пунктов<br>(Выбрано ${value.length})`;
+      }
     },
     onCheckbox(item) {
       if (this.value === '') {
@@ -176,6 +185,12 @@ export default {
       background-color: #fff;
       border: 1px solid #e8e8e8;
       border-radius: 2px;
+      &-left {
+        .select__dropdown {
+          left: unset;
+          right: 0;
+        }
+      }
       &-long {
         height: 400px;
       }
@@ -205,6 +220,9 @@ export default {
     &__text {
       display: flex;
       align-items: center;
+      .select__text-hide {
+        display: none;
+      }
       img {
         margin-right: 15px;
       }

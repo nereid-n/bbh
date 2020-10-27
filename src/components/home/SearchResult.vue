@@ -178,7 +178,7 @@ export default {
       margin-top: 15px;
       margin-bottom: 27px;
     }
-    .pagination {
+    .pagination-wrap {
       margin-right: auto;
     }
     .viewForm {

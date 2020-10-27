@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox-wrap">
-    <input @change="onInput" :id="data.id" type="checkbox">
+    <input ref="input" @change="onInput" :id="data.id" :checked="checked" type="checkbox">
     <label :for="data.id">
       <Icon v-if="data.icon !== undefined" :icon="data.icon"/>
       <span>{{data.text}}</span>
@@ -30,6 +30,35 @@ export default {
       }
       this.$emit('onInput', {value: value, name: name, text: this.data.text});
     }
+  },
+  props: {
+    checked: {
+      default: false,
+      type: Boolean
+    },
+    clear: {
+      default: false,
+      type: Boolean
+    }
+  },
+  watch: {
+    checked() {
+      this.$emit('onInput', {value: this.checked, name: this.data.name, text: this.data.text});
+    },
+    clear() {
+      if (!this.clear) {
+        this.$refs.input.checked = false;
+      }
+      this.$emit('onInput', {value: false, name: this.data.name, text: this.data.text});
+    }
+  },
+  created() {
+    if (this.checked) {
+      this.$emit('onInput', {value: this.checked, name: this.data.name, text: this.data.text});
+    }
+  },
+  destroyed() {
+    this.$emit('onInput', {value: false, name: this.data.name, text: this.data.text});
   },
   mixins: [inputMixin]
 }

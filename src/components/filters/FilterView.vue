@@ -50,7 +50,7 @@ export default {
         flex-direction: column;
       }
     }
-    .pagination {
+    .pagination-wrap {
       margin: 0 auto;
       padding-left: 117px;
       @media (max-width: $exlarg) {

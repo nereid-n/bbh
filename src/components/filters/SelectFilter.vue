@@ -22,6 +22,7 @@ name: "SelectFilter",
 
 <style lang="scss">
   .select-type {
-    min-width: 170px;
+    min-width: 195px;
+    max-width: 195px;
   }
 </style>
